@@ -13,7 +13,7 @@
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SWVMainViewController" customModule="SoundWaveViewer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="SVMainViewController" customModule="SoundWaveViewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,11 +31,21 @@
                                     <action selector="newFilePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xJh-41-22T"/>
                                 </connections>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rH4-ki-8IK">
+                                <rect key="frame" x="0.0" y="94" width="375" height="573"/>
+                                <connections>
+                                    <segue destination="eK3-kf-Vko" kind="embed" id="8JU-ab-3Gd"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="rH4-ki-8IK" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="EnM-n6-3WF"/>
                             <constraint firstItem="gDt-2N-nR0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WPx-ff-5g7"/>
+                            <constraint firstItem="rH4-ki-8IK" firstAttribute="top" secondItem="gDt-2N-nR0" secondAttribute="bottom" constant="20" id="hxp-9P-oq9"/>
+                            <constraint firstItem="rH4-ki-8IK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ivy-MI-Tuc"/>
                             <constraint firstItem="gDt-2N-nR0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="jxs-rh-jah"/>
+                            <constraint firstItem="rH4-ki-8IK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="zx3-0b-FXM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -43,6 +53,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
+        </scene>
+        <!--Wave Form View Controller-->
+        <scene sceneID="IsO-Kh-Erk">
+            <objects>
+                <viewController id="eK3-kf-Vko" customClass="SVWaveFormViewController" customModule="SoundWaveViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yrq-Xg-qHM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="573"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqn-ag-0gb">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="431"/>
+                            </scrollView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-OL-tL7">
+                                <rect key="frame" x="0.0" y="439" width="375" height="134"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="134" id="DAH-Jl-BBl"/>
+                                </constraints>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="f6E-OL-tL7" firstAttribute="top" secondItem="rqn-ag-0gb" secondAttribute="bottom" constant="8" id="8eg-SQ-Z0Q"/>
+                            <constraint firstItem="f6E-OL-tL7" firstAttribute="leading" secondItem="yrq-Xg-qHM" secondAttribute="leading" id="Fyn-hI-kEc"/>
+                            <constraint firstAttribute="trailing" secondItem="rqn-ag-0gb" secondAttribute="trailing" id="cUw-cg-Nzm"/>
+                            <constraint firstItem="rqn-ag-0gb" firstAttribute="leading" secondItem="yrq-Xg-qHM" secondAttribute="leading" id="gKt-Xj-ebt"/>
+                            <constraint firstAttribute="trailing" secondItem="f6E-OL-tL7" secondAttribute="trailing" id="otK-4M-SgH"/>
+                            <constraint firstAttribute="bottom" secondItem="f6E-OL-tL7" secondAttribute="bottom" id="qTG-7N-zMX"/>
+                            <constraint firstItem="rqn-ag-0gb" firstAttribute="top" secondItem="yrq-Xg-qHM" secondAttribute="top" id="xHT-Tl-8lE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tracksView" destination="f6E-OL-tL7" id="s9i-mw-37n"/>
+                        <outlet property="waveFormView" destination="rqn-ag-0gb" id="jNv-d0-YZj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jep-S7-SzV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="936.79999999999995" y="-23.838080959520241"/>
         </scene>
     </scenes>
 </document>

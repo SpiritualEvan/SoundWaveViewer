@@ -8,10 +8,8 @@
 
 import UIKit
 
-class SWVMainViewController: UIViewController {
+class SVMainViewController: UIViewController {
 
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +23,7 @@ class SWVMainViewController: UIViewController {
         let imagePickerVC = UIImagePickerController()
         imagePickerVC.sourceType = .photoLibrary
         self.present(imagePickerVC, animated: true, completion: nil)
-
+        
     }
     
 }
