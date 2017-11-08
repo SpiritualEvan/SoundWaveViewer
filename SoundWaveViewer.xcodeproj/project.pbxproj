@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE801FB1AC9E00C4942A /* AppDelegate.swift */; };
-		68CECE831FB1AC9E00C4942A /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE821FB1AC9E00C4942A /* SVMainViewController.swift */; };
 		68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE841FB1AC9E00C4942A /* Main.storyboard */; };
 		68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE871FB1AC9E00C4942A /* Assets.xcassets */; };
 		68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */; };
@@ -40,7 +39,6 @@
 /* Begin PBXFileReference section */
 		68CECE7D1FB1AC9E00C4942A /* SoundWaveViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundWaveViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECE801FB1AC9E00C4942A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		68CECE821FB1AC9E00C4942A /* SVMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVMainViewController.swift; sourceTree = "<group>"; };
 		68CECE851FB1AC9E00C4942A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		68CECE871FB1AC9E00C4942A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68CECE8A1FB1AC9E00C4942A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -140,17 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				DAC74DEC1FB279E1007CAD88 /* WaveFormView */,
-				DAC74DEB1FB279D5007CAD88 /* MainView */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		DAC74DEB1FB279D5007CAD88 /* MainView */ = {
-			isa = PBXGroup;
-			children = (
-				68CECE821FB1AC9E00C4942A /* SVMainViewController.swift */,
-			);
-			path = MainView;
 			sourceTree = "<group>";
 		};
 		DAC74DEC1FB279E1007CAD88 /* WaveFormView */ = {
@@ -305,7 +294,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */,
-				68CECE831FB1AC9E00C4942A /* SVMainViewController.swift in Sources */,
 				68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */,
 				DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */,
 			);
