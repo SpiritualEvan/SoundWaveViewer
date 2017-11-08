@@ -18,10 +18,16 @@ struct SVMedia {
     let tracks:[AVAssetTrack]!
 }
 class SVSoundLoader {
-    class func loadMedia(mediaPath:String!, completion:((_ media:SVMedia?, _ error:Error?)->Void)) {
-        let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
-        let audioTracks = asset.tracks(withMediaType: .audio)
-        let loadedMedia = SVMedia(tracks: audioTracks)
-        completion(loadedMedia, nil)
+    class func loadMedia(mediaPath:String!, completion:@escaping ((_ media:SVMedia?, _ error:Error?)->Void)) {
+        DispatchQueue.global().async {
+            let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
+            let audioTracks = asset.tracks(withMediaType: .audio)
+            let loadedMedia = SVMedia(tracks: audioTracks)
+            DispatchQueue.main.async {
+                completion(loadedMedia, nil)
+            }
+            
+        }
     }
+    
 }

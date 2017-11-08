@@ -84,11 +84,8 @@
                             <constraint firstAttribute="bottom" secondItem="f6E-OL-tL7" secondAttribute="bottom" id="qTG-7N-zMX"/>
                             <constraint firstItem="rqn-ag-0gb" firstAttribute="top" secondItem="yrq-Xg-qHM" secondAttribute="top" id="xHT-Tl-8lE"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="pSf-ki-WJW"/>
                     </view>
-                    <connections>
-                        <outlet property="tracksView" destination="f6E-OL-tL7" id="s9i-mw-37n"/>
-                        <outlet property="waveFormView" destination="rqn-ag-0gb" id="jNv-d0-YZj"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jep-S7-SzV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -7,16 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		684601051FB32821004F8DF8 /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601011FB3280F004F8DF8 /* 1.m4a */; };
+		684601061FB32821004F8DF8 /* 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601021FB32813004F8DF8 /* 2.m4a */; };
+		684601071FB32821004F8DF8 /* 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601031FB32818004F8DF8 /* 3.m4a */; };
+		684601081FB32821004F8DF8 /* 4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601041FB3281D004F8DF8 /* 4.m4a */; };
+		6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = 684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */; };
 		68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE801FB1AC9E00C4942A /* AppDelegate.swift */; };
 		68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE841FB1AC9E00C4942A /* Main.storyboard */; };
 		68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE871FB1AC9E00C4942A /* Assets.xcassets */; };
 		68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */; };
 		68CECE961FB1AC9E00C4942A /* SoundWaveViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */; };
 		68CECEA11FB1AC9E00C4942A /* SoundWaveViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */; };
+		DA13B0671FB3C2DF006C5207 /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */; };
 		DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */; };
 		DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */; };
 		DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */; };
-		DAC74DF31FB28066007CAD88 /* multi_track_audio.MOV in Resources */ = {isa = PBXBuildFile; fileRef = DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +42,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		684601011FB3280F004F8DF8 /* 1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.m4a; sourceTree = "<group>"; };
+		684601021FB32813004F8DF8 /* 2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.m4a; sourceTree = "<group>"; };
+		684601031FB32818004F8DF8 /* 3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.m4a; sourceTree = "<group>"; };
+		684601041FB3281D004F8DF8 /* 4.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.m4a; sourceTree = "<group>"; };
+		684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 4_tracks_audio.mov; sourceTree = "<group>"; };
 		68CECE7D1FB1AC9E00C4942A /* SoundWaveViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundWaveViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECE801FB1AC9E00C4942A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68CECE851FB1AC9E00C4942A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -49,10 +59,10 @@
 		68CECE9C1FB1AC9E00C4942A /* SoundWaveViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundWaveViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveViewerUITests.swift; sourceTree = "<group>"; };
 		68CECEA21FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVMainViewController.swift; sourceTree = "<group>"; };
 		DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormViewController.swift; sourceTree = "<group>"; };
 		DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVSoundLoader.swift; path = SoundLoader/SVSoundLoader.swift; sourceTree = "<group>"; };
 		DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVSoundLoaderTests.swift; sourceTree = "<group>"; };
-		DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = multi_track_audio.MOV; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +130,11 @@
 				68CECE971FB1AC9E00C4942A /* Info.plist */,
 				68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */,
 				DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */,
-				DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */,
+				684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */,
+				684601011FB3280F004F8DF8 /* 1.m4a */,
+				684601021FB32813004F8DF8 /* 2.m4a */,
+				684601031FB32818004F8DF8 /* 3.m4a */,
+				684601041FB3281D004F8DF8 /* 4.m4a */,
 			);
 			path = SoundWaveViewerTests;
 			sourceTree = "<group>";
@@ -137,9 +151,18 @@
 		68CECEAE1FB1BB5E00C4942A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DA13B0651FB3C2CB006C5207 /* MainView */,
 				DAC74DEC1FB279E1007CAD88 /* WaveFormView */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DA13B0651FB3C2CB006C5207 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */,
+			);
+			path = MainView;
 			sourceTree = "<group>";
 		};
 		DAC74DEC1FB279E1007CAD88 /* WaveFormView */ = {
@@ -265,8 +288,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				684601071FB32821004F8DF8 /* 3.m4a in Resources */,
+				684601081FB32821004F8DF8 /* 4.m4a in Resources */,
+				684601061FB32821004F8DF8 /* 2.m4a in Resources */,
 				68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */,
 				68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */,
+				684601051FB32821004F8DF8 /* 1.m4a in Resources */,
 				68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,7 +302,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAC74DF31FB28066007CAD88 /* multi_track_audio.MOV in Resources */,
+				6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +322,7 @@
 			files = (
 				DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */,
 				68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */,
+				DA13B0671FB3C2DF006C5207 /* SVMainViewController.swift in Sources */,
 				DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

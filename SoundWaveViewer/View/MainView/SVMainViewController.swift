@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  SVMainViewController.swift
 //  SoundWaveViewer
 //
-//  Created by Won Cheul Seok on 2017. 11. 7..
+//  Created by Evan Seok on 2017. 11. 9..
 //  Copyright © 2017년 Evan Seok. All rights reserved.
 //
 
