@@ -20,6 +20,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDt-2N-nR0">
                                 <rect key="frame" x="0.0" y="20" width="57" height="54"/>
+                                <accessibility key="accessibilityConfiguration" label="dd"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="57" id="UOh-9Y-YLf"/>
                                     <constraint firstAttribute="height" constant="54" id="aGO-8r-VXQ"/>

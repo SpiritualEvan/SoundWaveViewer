@@ -20,13 +20,15 @@ class SVSoundLoaderTests: XCTestCase {
     }
     
     func testMediaLoad() {
+        
+        // test for multi track audios
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "multi_track_audio", ofType: "MOV")
         XCTAssertNotNil(mediaPath)
+        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
+            XCTAssertNotNil(media)
+            XCTAssertGreaterThan(0, media!.tracks.count)
+        }
         
-        let loadedMedia = SVSoundLoader.loadMedia(mediaPath: mediaPath)
-        XCTAssertNotNil(loadedMedia)
-        
-        XCTAssertEqual(<#T##expression1: [Equatable]##[Equatable]#>, <#T##expression2: [Equatable]##[Equatable]#>) loadedMedia!.title
     }
     
     func testPerformanceExample() {

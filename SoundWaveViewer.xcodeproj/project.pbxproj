@@ -119,8 +119,8 @@
 		68CECE941FB1AC9E00C4942A /* SoundWaveViewerTests */ = {
 			isa = PBXGroup;
 			children = (
-				68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */,
 				68CECE971FB1AC9E00C4942A /* Info.plist */,
+				68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */,
 				DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */,
 				DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */,
 			);

@@ -23,6 +23,7 @@ class SoundWaveViewerUITests: XCTestCase {
     }
     
     func testNewFile() {
+        
         // press new file button
         let newFileButton = app.buttons.element(boundBy: 0)
         XCTAssertEqual("+", newFileButton.title)
