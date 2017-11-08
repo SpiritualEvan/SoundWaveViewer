@@ -15,6 +15,9 @@
 		68CECE961FB1AC9E00C4942A /* SoundWaveViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */; };
 		68CECEA11FB1AC9E00C4942A /* SoundWaveViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */; };
 		DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */; };
+		DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */; };
+		DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */; };
+		DAC74DF31FB28066007CAD88 /* multi_track_audio.MOV in Resources */ = {isa = PBXBuildFile; fileRef = DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveViewerUITests.swift; sourceTree = "<group>"; };
 		68CECEA21FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormViewController.swift; sourceTree = "<group>"; };
+		DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVSoundLoader.swift; path = SoundLoader/SVSoundLoader.swift; sourceTree = "<group>"; };
+		DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVSoundLoaderTests.swift; sourceTree = "<group>"; };
+		DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = multi_track_audio.MOV; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,7 @@
 		68CECE7F1FB1AC9E00C4942A /* SoundWaveViewer */ = {
 			isa = PBXGroup;
 			children = (
+				DAC74DED1FB27A70007CAD88 /* Submodules */,
 				68CECEAE1FB1BB5E00C4942A /* View */,
 				68CECE801FB1AC9E00C4942A /* AppDelegate.swift */,
 				68CECE841FB1AC9E00C4942A /* Main.storyboard */,
@@ -114,6 +121,8 @@
 			children = (
 				68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */,
 				68CECE971FB1AC9E00C4942A /* Info.plist */,
+				DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */,
+				DAC74DF21FB28066007CAD88 /* multi_track_audio.MOV */,
 			);
 			path = SoundWaveViewerTests;
 			sourceTree = "<group>";
@@ -150,6 +159,14 @@
 				DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */,
 			);
 			path = WaveFormView;
+			sourceTree = "<group>";
+		};
+		DAC74DED1FB27A70007CAD88 /* Submodules */ = {
+			isa = PBXGroup;
+			children = (
+				DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */,
+			);
+			path = Submodules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC74DF31FB28066007CAD88 /* multi_track_audio.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +307,7 @@
 				DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */,
 				68CECE831FB1AC9E00C4942A /* SVMainViewController.swift in Sources */,
 				68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */,
+				DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68CECE961FB1AC9E00C4942A /* SoundWaveViewerTests.swift in Sources */,
+				DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
