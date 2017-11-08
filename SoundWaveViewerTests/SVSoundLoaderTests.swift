@@ -20,7 +20,7 @@ class SVSoundLoaderTests: XCTestCase {
         super.tearDown()
     }
     
-    func testMediaLoad() {
+    func testLoad4TrackMedia() {
         
         // test for multi track audios
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "4_tracks_audio", ofType: "mov")
@@ -40,7 +40,45 @@ class SVSoundLoaderTests: XCTestCase {
             
         }
     }
-    
+    func testLoad1TrackMedia() {
+        
+        // test for multi track audios
+        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+        XCTAssertNotNil(mediaPath)
+        
+        let onNextExpectation = expectation(description: "onNextExpectation")
+        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
+            XCTAssertNotNil(media)
+            XCTAssertEqual(1, media!.tracks.count)
+            onNextExpectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10) { (error) in
+            guard nil == error else {
+                XCTFail((error?.localizedDescription)!)
+                return
+            }
+            
+        }
+    }
+    func testVideoOnlyMedia() {
+        
+        // test for multi track audios
+        let mediaPath = Bundle(for: type(of: self)).path(forResource: "video_only", ofType: "mov")
+        let onNextExpectation = expectation(description: "onNextExpectation")
+        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
+            XCTAssertNil(media)
+            XCTAssertNotNil(error)
+            XCTAssertEqual(SVSoundLoaderError.NoAudioTracksFounded, error)
+            onNextExpectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10) { (error) in
+            guard nil == error else {
+                XCTFail((error?.localizedDescription)!)
+                return
+            }
+            
+        }
+    }
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

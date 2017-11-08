@@ -10,24 +10,32 @@ import UIKit
 import AVFoundation
 
 enum SVSoundLoaderError:Error {
-    case NoAudioTracks
-    
+    case NoAudioTracksFounded
 }
 
 struct SVMedia {
     let tracks:[AVAssetTrack]!
 }
 class SVSoundLoader {
-    class func loadMedia(mediaPath:String!, completion:@escaping ((_ media:SVMedia?, _ error:Error?)->Void)) {
+    class func loadMedia(mediaPath:String!, completion:@escaping ((_ media:SVMedia?, _ error:SVSoundLoaderError?)->Void)) {
+        
         DispatchQueue.global().async {
+            
             let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
             let audioTracks = asset.tracks(withMediaType: .audio)
+            guard 0 < audioTracks.count else {
+                completion(nil, .NoAudioTracksFounded)
+                return
+            }
+            
             let loadedMedia = SVMedia(tracks: audioTracks)
+            
             DispatchQueue.main.async {
                 completion(loadedMedia, nil)
             }
             
         }
+        
     }
     
 }

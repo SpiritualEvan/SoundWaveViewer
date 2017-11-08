@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		684601051FB32821004F8DF8 /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601011FB3280F004F8DF8 /* 1.m4a */; };
-		684601061FB32821004F8DF8 /* 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601021FB32813004F8DF8 /* 2.m4a */; };
-		684601071FB32821004F8DF8 /* 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601031FB32818004F8DF8 /* 3.m4a */; };
-		684601081FB32821004F8DF8 /* 4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601041FB3281D004F8DF8 /* 4.m4a */; };
 		6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = 684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */; };
 		68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE801FB1AC9E00C4942A /* AppDelegate.swift */; };
 		68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE841FB1AC9E00C4942A /* Main.storyboard */; };
 		68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE871FB1AC9E00C4942A /* Assets.xcassets */; };
 		68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */; };
-		68CECE961FB1AC9E00C4942A /* SoundWaveViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */; };
 		68CECEA11FB1AC9E00C4942A /* SoundWaveViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */; };
 		DA13B0671FB3C2DF006C5207 /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */; };
+		DA13B0681FB3C85F006C5207 /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601011FB3280F004F8DF8 /* 1.m4a */; };
+		DA13B0691FB3C864006C5207 /* 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601021FB32813004F8DF8 /* 2.m4a */; };
+		DA13B06A1FB3C864006C5207 /* 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601031FB32818004F8DF8 /* 3.m4a */; };
+		DA13B06B1FB3C864006C5207 /* 4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601041FB3281D004F8DF8 /* 4.m4a */; };
+		DA13B06D1FB3CAAA006C5207 /* video.MOV in Resources */ = {isa = PBXBuildFile; fileRef = DA13B06C1FB3CAAA006C5207 /* video.MOV */; };
+		DA13B06F1FB3CDC5006C5207 /* video_only.mov in Resources */ = {isa = PBXBuildFile; fileRef = DA13B06E1FB3CDC5006C5207 /* video_only.mov */; };
 		DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */; };
 		DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */; };
 		DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */; };
@@ -54,12 +55,13 @@
 		68CECE8A1FB1AC9E00C4942A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68CECE8C1FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68CECE911FB1AC9E00C4942A /* SoundWaveViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundWaveViewerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveViewerTests.swift; sourceTree = "<group>"; };
 		68CECE971FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68CECE9C1FB1AC9E00C4942A /* SoundWaveViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundWaveViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveViewerUITests.swift; sourceTree = "<group>"; };
 		68CECEA21FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVMainViewController.swift; sourceTree = "<group>"; };
+		DA13B06C1FB3CAAA006C5207 /* video.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video.MOV; sourceTree = "<group>"; };
+		DA13B06E1FB3CDC5006C5207 /* video_only.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video_only.mov; sourceTree = "<group>"; };
 		DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormViewController.swift; sourceTree = "<group>"; };
 		DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVSoundLoader.swift; path = SoundLoader/SVSoundLoader.swift; sourceTree = "<group>"; };
 		DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVSoundLoaderTests.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				68CECE871FB1AC9E00C4942A /* Assets.xcassets */,
 				68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */,
 				68CECE8C1FB1AC9E00C4942A /* Info.plist */,
+				DA13B06C1FB3CAAA006C5207 /* video.MOV */,
 			);
 			path = SoundWaveViewer;
 			sourceTree = "<group>";
@@ -128,13 +131,13 @@
 			isa = PBXGroup;
 			children = (
 				68CECE971FB1AC9E00C4942A /* Info.plist */,
-				68CECE951FB1AC9E00C4942A /* SoundWaveViewerTests.swift */,
 				DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */,
 				684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */,
 				684601011FB3280F004F8DF8 /* 1.m4a */,
 				684601021FB32813004F8DF8 /* 2.m4a */,
 				684601031FB32818004F8DF8 /* 3.m4a */,
 				684601041FB3281D004F8DF8 /* 4.m4a */,
+				DA13B06E1FB3CDC5006C5207 /* video_only.mov */,
 			);
 			path = SoundWaveViewerTests;
 			sourceTree = "<group>";
@@ -288,13 +291,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				684601071FB32821004F8DF8 /* 3.m4a in Resources */,
-				684601081FB32821004F8DF8 /* 4.m4a in Resources */,
-				684601061FB32821004F8DF8 /* 2.m4a in Resources */,
 				68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */,
 				68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */,
-				684601051FB32821004F8DF8 /* 1.m4a in Resources */,
 				68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */,
+				DA13B06D1FB3CAAA006C5207 /* video.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +302,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA13B06F1FB3CDC5006C5207 /* video_only.mov in Resources */,
+				DA13B06A1FB3C864006C5207 /* 3.m4a in Resources */,
+				DA13B06B1FB3C864006C5207 /* 4.m4a in Resources */,
+				DA13B0691FB3C864006C5207 /* 2.m4a in Resources */,
+				DA13B0681FB3C85F006C5207 /* 1.m4a in Resources */,
 				6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,7 +336,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68CECE961FB1AC9E00C4942A /* SoundWaveViewerTests.swift in Sources */,
 				DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
