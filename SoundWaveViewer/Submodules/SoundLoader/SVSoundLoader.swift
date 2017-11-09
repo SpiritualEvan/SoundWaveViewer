@@ -9,33 +9,71 @@
 import UIKit
 import AVFoundation
 
-enum SVSoundLoaderError:Error {
+enum SVSoundLoaderError:CustomNSError {
+    
+    case UnknownError
     case NoAudioTracksFounded
+    
+    var localizedDescription: String {
+        switch self {
+        case .UnknownError: return "Unknown error"
+        case .NoAudioTracksFounded: return "No Audio Tracks Founded"
+        }
+    }
 }
 
 struct SVMedia {
-    let tracks:[AVAssetTrack]!
+    let media:AVAsset!
 }
-class SVSoundLoader {
-    class func loadMedia(mediaPath:String!, completion:@escaping ((_ media:SVMedia?, _ error:SVSoundLoaderError?)->Void)) {
+
+final class SVSoundLoader {
+//    class func loadMedia(mediaPath:String!, completion:@escaping ((_ media:SVMedia?, _ error:SVSoundLoaderError?)->Void)) {
+//
+//        DispatchQueue.global().async {
+//
+//            let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
+//            let audioTracks = asset.tracks(withMediaType: .audio)
+//            guard 0 < audioTracks.count else {
+//                completion(nil, .NoAudioTracksFounded)
+//                return
+//            }
+//
+//            let loadedMedia = SVMedia(tracks: audioTracks)
+//
+//            DispatchQueue.main.async {
+//                completion(loadedMedia, nil)
+//            }
+//
+//        }
+//
+//    }
+    class func loadTracks(mediaPath:String!, completion:@escaping ((_ medias:[SVMedia]?, _ error:Error?)->Void)) throws {
         
         DispatchQueue.global().async {
             
             let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
             let audioTracks = asset.tracks(withMediaType: .audio)
             guard 0 < audioTracks.count else {
-                completion(nil, .NoAudioTracksFounded)
+                completion(nil, SVSoundLoaderError.NoAudioTracksFounded)
                 return
             }
-            
-            let loadedMedia = SVMedia(tracks: audioTracks)
+            var medias = [SVMedia]()
+            for track in audioTracks {
+                let composition = AVMutableComposition()
+                let audioTrackComposition = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)!
+                do {
+                    try audioTrackComposition.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration), of: track, at: kCMTimeZero)
+                    medias.append(SVMedia(media: composition))
+                }catch {
+                    completion(nil, error)
+                }
+            }
             
             DispatchQueue.main.async {
-                completion(loadedMedia, nil)
+                completion(medias, nil)
             }
             
         }
         
     }
-    
 }

@@ -8,18 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = 684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */; };
+		6846011C1FB4676E004F8DF8 /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6846011B1FB4676E004F8DF8 /* SVMainViewController.swift */; };
 		68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE801FB1AC9E00C4942A /* AppDelegate.swift */; };
 		68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE841FB1AC9E00C4942A /* Main.storyboard */; };
 		68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE871FB1AC9E00C4942A /* Assets.xcassets */; };
 		68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */; };
 		68CECEA11FB1AC9E00C4942A /* SoundWaveViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */; };
-		DA13B0671FB3C2DF006C5207 /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */; };
+		68D37B331FB467B7000624C4 /* SVWaveFormBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D37B321FB467B7000624C4 /* SVWaveFormBuilderTests.swift */; };
 		DA13B0681FB3C85F006C5207 /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601011FB3280F004F8DF8 /* 1.m4a */; };
 		DA13B0691FB3C864006C5207 /* 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601021FB32813004F8DF8 /* 2.m4a */; };
 		DA13B06A1FB3C864006C5207 /* 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601031FB32818004F8DF8 /* 3.m4a */; };
 		DA13B06B1FB3C864006C5207 /* 4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 684601041FB3281D004F8DF8 /* 4.m4a */; };
 		DA13B06D1FB3CAAA006C5207 /* video.MOV in Resources */ = {isa = PBXBuildFile; fileRef = DA13B06C1FB3CAAA006C5207 /* video.MOV */; };
 		DA13B06F1FB3CDC5006C5207 /* video_only.mov in Resources */ = {isa = PBXBuildFile; fileRef = DA13B06E1FB3CDC5006C5207 /* video_only.mov */; };
+		DA13B0711FB3D04B006C5207 /* SVWaveFormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13B0701FB3D04B006C5207 /* SVWaveFormBuilder.swift */; };
 		DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */; };
 		DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */; };
 		DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */; };
@@ -48,6 +50,7 @@
 		684601031FB32818004F8DF8 /* 3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.m4a; sourceTree = "<group>"; };
 		684601041FB3281D004F8DF8 /* 4.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 4.m4a; sourceTree = "<group>"; };
 		684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 4_tracks_audio.mov; sourceTree = "<group>"; };
+		6846011B1FB4676E004F8DF8 /* SVMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVMainViewController.swift; sourceTree = "<group>"; };
 		68CECE7D1FB1AC9E00C4942A /* SoundWaveViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundWaveViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECE801FB1AC9E00C4942A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68CECE851FB1AC9E00C4942A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -59,9 +62,10 @@
 		68CECE9C1FB1AC9E00C4942A /* SoundWaveViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundWaveViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveViewerUITests.swift; sourceTree = "<group>"; };
 		68CECEA21FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVMainViewController.swift; sourceTree = "<group>"; };
+		68D37B321FB467B7000624C4 /* SVWaveFormBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormBuilderTests.swift; sourceTree = "<group>"; };
 		DA13B06C1FB3CAAA006C5207 /* video.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video.MOV; sourceTree = "<group>"; };
 		DA13B06E1FB3CDC5006C5207 /* video_only.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video_only.mov; sourceTree = "<group>"; };
+		DA13B0701FB3D04B006C5207 /* SVWaveFormBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVWaveFormBuilder.swift; path = WaveFormBuilder/SVWaveFormBuilder.swift; sourceTree = "<group>"; };
 		DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormViewController.swift; sourceTree = "<group>"; };
 		DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVSoundLoader.swift; path = SoundLoader/SVSoundLoader.swift; sourceTree = "<group>"; };
 		DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVSoundLoaderTests.swift; sourceTree = "<group>"; };
@@ -92,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6846011A1FB4676E004F8DF8 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				6846011B1FB4676E004F8DF8 /* SVMainViewController.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
 		68CECE741FB1AC9E00C4942A = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				68CECE971FB1AC9E00C4942A /* Info.plist */,
+				68D37B321FB467B7000624C4 /* SVWaveFormBuilderTests.swift */,
 				DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */,
 				684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */,
 				684601011FB3280F004F8DF8 /* 1.m4a */,
@@ -154,18 +167,10 @@
 		68CECEAE1FB1BB5E00C4942A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DA13B0651FB3C2CB006C5207 /* MainView */,
+				6846011A1FB4676E004F8DF8 /* MainView */,
 				DAC74DEC1FB279E1007CAD88 /* WaveFormView */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		DA13B0651FB3C2CB006C5207 /* MainView */ = {
-			isa = PBXGroup;
-			children = (
-				DA13B0661FB3C2DF006C5207 /* SVMainViewController.swift */,
-			);
-			path = MainView;
 			sourceTree = "<group>";
 		};
 		DAC74DEC1FB279E1007CAD88 /* WaveFormView */ = {
@@ -180,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC74DEE1FB27AF0007CAD88 /* SVSoundLoader.swift */,
+				DA13B0701FB3D04B006C5207 /* SVWaveFormBuilder.swift */,
 			);
 			path = Submodules;
 			sourceTree = "<group>";
@@ -325,9 +331,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA13B0711FB3D04B006C5207 /* SVWaveFormBuilder.swift in Sources */,
+				6846011C1FB4676E004F8DF8 /* SVMainViewController.swift in Sources */,
 				DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */,
 				68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */,
-				DA13B0671FB3C2DF006C5207 /* SVMainViewController.swift in Sources */,
 				DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */,
+				68D37B331FB467B7000624C4 /* SVWaveFormBuilderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

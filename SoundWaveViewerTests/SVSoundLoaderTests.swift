@@ -27,11 +27,13 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
-            XCTAssertNotNil(media)
-            XCTAssertEqual(4, media!.tracks.count)
+        XCTAssertNoThrow(try SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+            XCTAssertTrue(nil != medias)
+            XCTAssertTrue(4 == medias!.count)
+            XCTAssertNil(error)
             onNextExpectation.fulfill()
-        }
+        })
+    
         self.waitForExpectations(timeout: 10) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
@@ -47,11 +49,13 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
-            XCTAssertNotNil(media)
-            XCTAssertEqual(1, media!.tracks.count)
+        XCTAssertNoThrow(try SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+            XCTAssertTrue(nil != medias)
+            XCTAssertTrue(1 == medias!.count)
+            XCTAssertNil(error)
             onNextExpectation.fulfill()
-        }
+        })
+
         self.waitForExpectations(timeout: 10) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
@@ -65,12 +69,13 @@ class SVSoundLoaderTests: XCTestCase {
         // test for multi track audios
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "video_only", ofType: "mov")
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadMedia(mediaPath: mediaPath) { (media, error) in
-            XCTAssertNil(media)
-            XCTAssertNotNil(error)
-            XCTAssertEqual(SVSoundLoaderError.NoAudioTracksFounded, error)
+        XCTAssertNoThrow(try SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+            XCTAssertTrue(nil == medias)
+            XCTAssertTrue(error! is SVSoundLoaderError)
+            XCTAssertEqual(SVSoundLoaderError.NoAudioTracksFounded, (error as! SVSoundLoaderError))
             onNextExpectation.fulfill()
-        }
+        })
+        
         self.waitForExpectations(timeout: 10) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
@@ -79,11 +84,6 @@ class SVSoundLoaderTests: XCTestCase {
             
         }
     }
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+    
     
 }
