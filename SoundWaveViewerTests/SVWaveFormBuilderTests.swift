@@ -28,14 +28,14 @@ class SVWaveFormBuilderTests: XCTestCase {
         // test for multi track audios
         let onNextExpectation = expectation(description: "onNextExpectation")
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
-        let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath!))
-        let track = asset.tracks(withMediaType: .audio)[0]
-        
-        SVWaveFormBuilder.buildWaveform(track: track) { (waveform, error) in
+        SVWaveFormBuilder.buildWaveform(mediaURL: URL(fileURLWithPath:mediaPath!)) { (waveform, error) in
             XCTAssertNotNil(waveform)
             XCTAssertNil(error)
+            XCTAssertNotNil(waveform!.pcmDatas)
+            XCTAssertTrue(0 < waveform!.pcmDatas.count)
             onNextExpectation.fulfill()
         }
+    
         self.waitForExpectations(timeout: 10) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
@@ -43,6 +43,4 @@ class SVWaveFormBuilderTests: XCTestCase {
             }
         }
     }
-    
-    
 }
