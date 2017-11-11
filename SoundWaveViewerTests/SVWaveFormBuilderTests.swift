@@ -24,7 +24,7 @@ class SVWaveFormBuilderTests: XCTestCase {
         super.tearDown()
     }
     
-    func testBuildWaveForm() {
+    func testBuildWaveFormFromFile() {
         
         // test for multi track audios
         let onNextExpectation = expectation(description: "onNextExpectation")
@@ -38,6 +38,40 @@ class SVWaveFormBuilderTests: XCTestCase {
         }
     
         self.waitForExpectations(timeout: 10) { (error) in
+            guard nil == error else {
+                XCTFail((error?.localizedDescription)!)
+                return
+            }
+        }
+    }
+    func testBuildWaveFormFromAVAssetTrack() {
+        
+        // test for multi track audios
+        let onNextExpectation = expectation(description: "onNextExpectation")
+        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+        let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
+        let audioTrack = asset.tracks(withMediaType: .audio)[0]
+        SVWaveFormBuilder.buildWaveform(asset:asset, track: audioTrack, briefWaveformWidth: 320) { (waveformFromTrack, error) in
+            XCTAssertNotNil(waveformFromTrack)
+            XCTAssertNil(error)
+            XCTAssertNotNil(waveformFromTrack!.pcmDatas)
+            XCTAssertTrue(0 < waveformFromTrack!.pcmDatas.count)
+
+            let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+            SVWaveFormBuilder.buildWaveform(mediaURL: URL(fileURLWithPath:mediaPath!), briefWaveformWidth:320) { (waveformFromFile, error) in
+                XCTAssertNotNil(waveformFromFile)
+                XCTAssertNil(error)
+                XCTAssertNotNil(waveformFromFile!.pcmDatas)
+                XCTAssertTrue(0 < waveformFromFile!.pcmDatas.count)
+                XCTAssertEqual(waveformFromFile!.pcmDatas, waveformFromTrack!.pcmDatas)
+                onNextExpectation.fulfill()
+            }
+            
+        }
+        
+        
+        
+        self.waitForExpectations(timeout: 100) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
                 return

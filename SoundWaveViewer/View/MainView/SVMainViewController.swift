@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import MobileCoreServices
 
-final class SVMainViewController: UIViewController {
+final class SVMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var waveformViewController:SVWaveFormViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let indexOfWaveformVC = childViewControllers.index { (viewController) -> Bool in
+            return viewController is SVWaveFormViewController
+        }!
+        waveformViewController = childViewControllers[indexOfWaveformVC] as! SVWaveFormViewController
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,11 +26,27 @@ final class SVMainViewController: UIViewController {
     }
 
     @IBAction func newFilePressed(_ sender: Any) {
-        let imagePickerVC = UIImagePickerController()
-        imagePickerVC.sourceType = .photoLibrary
-        self.present(imagePickerVC, animated: true, completion: nil)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+            let imagePickerVC = UIImagePickerController()
+            imagePickerVC.sourceType = .savedPhotosAlbum
+            imagePickerVC.mediaTypes = [kUTTypeMovie as String, kUTTypeAudio as String]
+            imagePickerVC.delegate = self
+            self.present(imagePickerVC, animated: true, completion: nil)
+        }else {
+            
+        }
         
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let mediaURL = info[UIImagePickerControllerMediaURL] as? URL {
+            waveformViewController.loadTracks(mediaURL:mediaURL)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
 

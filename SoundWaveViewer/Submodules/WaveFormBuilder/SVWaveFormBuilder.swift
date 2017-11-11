@@ -17,6 +17,9 @@ enum SVWaveFormError:Error {
     case cannotFoundFloatDataFromPCMBuffer
     case failedToCreateDownsamplePCMData
     case failedToCreateContextWhileCreatingWaveformThumbnail
+    case failedReadingAudioTrack(readerStaus:AVAssetReaderStatus)
+    case failedToGetCMSampleBufferGetDataBuffer
+    case failedToGetStreamBasicDescription
 }
 
 struct SVWaveForm {
@@ -77,11 +80,75 @@ final class SVWaveFormThumbnailBuilder {
 }
 final class SVWaveFormBuilder {
     
+    class func buildWaveform(asset:AVAsset!, track:AVAssetTrack!, briefWaveformWidth:Int, completion:@escaping((_ waveform:SVWaveForm?, _ error:Error?) -> Void)) {
+        
+        DispatchQueue.global().async {
+            
+            let pcmDatas = [Float32](repeating:0.0, count:Int(track.totalSampleDataLength))
+            
+            do {
+                guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {
+                    completion(nil, SVWaveFormError.failedToGetStreamBasicDescription)
+                    return
+                }
+                let basicDescObj = basicDesc.pointee
+                let outputSettings:[String:Any] = [AVFormatIDKey: kAudioFormatLinearPCM,
+                                                   AVSampleRateKey: basicDescObj.mSampleRate,
+                                                   AVNumberOfChannelsKey: basicDescObj.mChannelsPerFrame,
+                                                   AVLinearPCMBitDepthKey:32,
+                                                   AVLinearPCMIsBigEndianKey:false,
+                                                   AVLinearPCMIsFloatKey:true,
+                                                   AVLinearPCMIsNonInterleaved: true]
+                
+                let reader = try AVAssetReader(asset: asset)
+                let trackOutput = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings)
+                reader.add(trackOutput)
+                reader.startReading()
+                
+                var indexOfPCMData = 0
+                while AVAssetReaderStatus.completed != reader.status {
+                    switch reader.status {
+                    case .reading:
+                        if let nextSampleBuffer = trackOutput.copyNextSampleBuffer() {
+                            if let pcmBlock = CMSampleBufferGetDataBuffer(nextSampleBuffer) {
+                                let pcmBlockSize = CMBlockBufferGetDataLength(pcmBlock)
+                                let blockPointer = UnsafeMutablePointer<Float32>(mutating: pcmDatas)
+                                CMBlockBufferCopyDataBytes(pcmBlock, 0, pcmBlockSize, blockPointer.advanced(by: indexOfPCMData))
+                                indexOfPCMData += pcmBlockSize / 32
+                            }else {
+                                completion(nil, SVWaveFormError.failedToGetCMSampleBufferGetDataBuffer)
+                                return
+                            }
+                        }
+                        
+                    case .cancelled, .failed, .unknown:
+                        DispatchQueue.main.async {
+                            completion(nil, SVWaveFormError.failedReadingAudioTrack(readerStaus: reader.status))
+                        }
+                        return
+                    case .completed:
+                        break;
+                    }
+                }
+            } catch {
+                completion(nil, error)
+            }
+            var waveform = SVWaveForm()
+            waveform.pcmDatas = pcmDatas
+            waveform.downsampledPCMDatas = downsamplePCMDatas(pcmDatas:waveform.pcmDatas, targetDownsampleLength:briefWaveformWidth)
+            DispatchQueue.main.async {
+                completion(waveform, nil)
+            }
+        }
+        
+        
+    }
     class func buildWaveform(mediaURL:URL!, briefWaveformWidth:Int, completion:@escaping((_ waveform:SVWaveForm?, _ error:Error?) -> Void)) {
         
         DispatchQueue.global().async {
             var file:AVAudioFile!
             do {
+                
                 file = try AVAudioFile(forReading: mediaURL)
             } catch {
                 completion(nil, error)

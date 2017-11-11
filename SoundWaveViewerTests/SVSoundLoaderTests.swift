@@ -27,7 +27,7 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (medias, error) in
             XCTAssertTrue(nil != medias)
             XCTAssertTrue(4 == medias!.count)
             XCTAssertNil(error)
@@ -49,7 +49,7 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (medias, error) in
             XCTAssertTrue(nil != medias)
             XCTAssertTrue(1 == medias!.count)
             XCTAssertNil(error)
@@ -69,7 +69,7 @@ class SVSoundLoaderTests: XCTestCase {
         // test for multi track audios
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "video_only", ofType: "mov")
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadTracks(mediaPath: mediaPath) { (medias, error) in
+        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (medias, error) in
             XCTAssertTrue(nil == medias)
             XCTAssertTrue(error! is SVSoundLoaderError)
             XCTAssertEqual(SVSoundLoaderError.NoAudioTracksFounded, (error as! SVSoundLoaderError))

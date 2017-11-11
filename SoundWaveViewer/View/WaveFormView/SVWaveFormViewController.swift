@@ -20,7 +20,28 @@ final class SVWaveFormViewController: UIViewController {
         super.viewDidLoad()
         tracks = [SVWaveForm]()
     }
-
+    func loadTracks(mediaURL:URL!) {
+        
+//        SVSoundLoader.loadTracks(mediaURL: mediaURL) { [weak self] (medias, error) in
+//            
+//            guard nil != self else {
+//                return
+//            }
+//            
+//            guard nil != error, let loadedMedias = medias else {
+//                let alertVC = UIAlertController(title: nil, message: error!.localizedDescription, preferredStyle: .alert)
+//                alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//                self!.present(alertVC, animated: true, completion: nil)
+//                return
+//            }
+//            
+//            SVWaveFormBuilder.buildWaveform(mediaURL: <#T##URL!#>, briefWaveformWidth: <#T##Int#>, completion: <#T##((SVWaveForm?, Error?) -> Void)##((SVWaveForm?, Error?) -> Void)##(SVWaveForm?, Error?) -> Void#>)
+//            
+//        }
+//        
+//        self.tracks = tracks
+//        tracksView.reloadData()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

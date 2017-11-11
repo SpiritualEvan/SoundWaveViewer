@@ -29,11 +29,11 @@ struct SVMedia {
 
 final class SVSoundLoader {
 
-    class func loadTracks(mediaPath:String!, completion:@escaping ((_ medias:[SVMedia]?, _ error:Error?)->Void)) {
+    class func loadTracks(mediaURL:URL!, completion:@escaping ((_ medias:[SVMedia]?, _ error:Error?)->Void)) {
         
         DispatchQueue.global().async {
             
-            let asset = AVURLAsset(url: URL(fileURLWithPath: mediaPath))
+            let asset = AVURLAsset(url: mediaURL)
             let audioTracks = asset.tracks(withMediaType: .audio)
             guard 0 < audioTracks.count else {
                 completion(nil, SVSoundLoaderError.NoAudioTracksFounded)
