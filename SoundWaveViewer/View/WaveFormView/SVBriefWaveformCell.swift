@@ -10,23 +10,42 @@ import UIKit
 
 final class SVBriefWaveformCell: UITableViewCell {
 
-//    static let waveformLoadQueue:OperationQueue()
+    static var thumbnailTaskQueue:OperationQueue {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }
     
-    @IBOutlet private var waveformImageView:UIImageView!
-    private var waveformLoadOperation:Operation?
+    @IBOutlet private var thumbnailView:UIImageView!
+    private var thumbnailTask:Operation?
     
     func setup(waveform:SVWaveForm!) {
         
-        if nil != waveformLoadOperation {
-            waveformLoadOperation?.cancel()
+        if nil != thumbnailTask {
+            thumbnailTask!.cancel()
         }
         
-        waveform.thumbnail(size: frame.size) { (image, error) in
+        let thumbnailLoadTask = waveform.thumbnail(size: self.frame.size, completion: { [weak self] (image, error) in
+            
+            guard nil != self else {
+                return
+            }
+            
             guard nil == error else {
                 return
             }
             
-//            waveformImageView.image = image
+            self!.thumbnailView.image = image
+            
+        })
+        SVBriefWaveformCell.thumbnailTaskQueue.addOperation(thumbnailLoadTask!)
+    }
+    
+    deinit {
+        
+        if let thumbnailTask = self.thumbnailTask {
+            thumbnailTask.cancel()
         }
+        
     }
 }

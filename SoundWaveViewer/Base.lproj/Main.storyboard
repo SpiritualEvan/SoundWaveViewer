@@ -96,10 +96,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="eK3-kf-Vko" id="5A1-D6-vgf"/>
-                                    <outlet property="delegate" destination="eK3-kf-Vko" id="og6-5s-o7R"/>
-                                </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-OL-tL7">
                                 <rect key="frame" x="0.0" y="439" width="375" height="134"/>
@@ -127,7 +123,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="waveformImageView" destination="Kvt-kK-fVr" id="bMp-70-ahC"/>
+                                            <outlet property="thumbnailView" destination="Kvt-kK-fVr" id="bMp-70-ahC"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

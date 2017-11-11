@@ -18,6 +18,7 @@ final class SVWaveFormViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tracks = [SVWaveForm]()
     }
 
     override func didReceiveMemoryWarning() {

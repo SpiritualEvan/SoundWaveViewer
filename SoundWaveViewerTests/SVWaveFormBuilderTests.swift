@@ -70,7 +70,7 @@ class SVWaveFormBuilderTests: XCTestCase {
             XCTAssertTrue(0.1 > fabs(floatArray!.last! + 1.0)) // expect -1.0
         }
     }
-    func testImageForWaveform() {
+    func testGeneratingWaveformThumbnail() {
         
         let onNextExpectation = expectation(description: "onNextExpectation")
         
@@ -79,15 +79,16 @@ class SVWaveFormBuilderTests: XCTestCase {
         var waveform = SVWaveForm()
         waveform.pcmDatas = dataArray
         let expectImageSize = CGSize(width: 100, height: 120)
-        waveform.thumbnail(size: expectImageSize) { (image, error) in
+        let task = waveform.thumbnail(size: expectImageSize) { (image, error) in
             XCTAssertNotNil(image)
             XCTAssertEqual(expectImageSize, image!.size)
             XCTAssertNil(error)
             onNextExpectation.fulfill()
-
         }
+        XCTAssertNotNil(task)
+        task!.start()
         
-        waitForExpectations(timeout: 10) { (error) in
+        self.waitForExpectations(timeout: 3) { (error) in
             guard nil == error else {
                 XCTFail((error?.localizedDescription)!)
                 return
