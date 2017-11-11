@@ -47,7 +47,7 @@ class SVWaveFormBuilderTests: XCTestCase {
     func testDownsampling1HourSoundA() {
         let floatArray = [Float32](repeating:1.0, count: 44100 * 60 * 60)
         self.measure {
-            let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: floatArray, widthInPixel: 10)
+            let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: floatArray, targetDownsampleLength: 10)
             XCTAssertNotNil(downsampleArray)
             XCTAssertEqual(10, downsampleArray!.count)
             
@@ -61,7 +61,7 @@ class SVWaveFormBuilderTests: XCTestCase {
         var dataArray = [Float32](repeating:1.0, count: 44100 * 60 * 30)
         dataArray += [Float32](repeating:-1.0, count: 44100 * 60 * 30)
         self.measure {
-            let floatArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: dataArray, widthInPixel: 20)
+            let floatArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: dataArray, targetDownsampleLength: 20)
             XCTAssertNotNil(floatArray)
             XCTAssertEqual(20, floatArray!.count)
             XCTAssertTrue(0.1 > fabs(floatArray!.first! - 1.0)) // expect 1.0
@@ -70,4 +70,30 @@ class SVWaveFormBuilderTests: XCTestCase {
             XCTAssertTrue(0.1 > fabs(floatArray!.last! + 1.0)) // expect -1.0
         }
     }
+    func testImageForWaveform() {
+        
+        let onNextExpectation = expectation(description: "onNextExpectation")
+        
+        var dataArray = [Float32](repeating:1.0, count: 44100 * 60 * 30)
+        dataArray += [Float32](repeating:-1.0, count: 44100 * 60 * 30)
+        var waveform = SVWaveForm()
+        waveform.pcmDatas = dataArray
+        let expectImageSize = CGSize(width: 100, height: 120)
+        waveform.thumbnail(size: expectImageSize) { (image, error) in
+            XCTAssertNotNil(image)
+            XCTAssertEqual(expectImageSize, image!.size)
+            XCTAssertNil(error)
+            onNextExpectation.fulfill()
+
+        }
+        
+        waitForExpectations(timeout: 10) { (error) in
+            guard nil == error else {
+                XCTFail((error?.localizedDescription)!)
+                return
+            }
+        }
+
+    }
+    
 }

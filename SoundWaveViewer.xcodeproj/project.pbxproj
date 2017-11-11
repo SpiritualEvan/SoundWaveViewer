@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6824FE411FB6A42100073271 /* SVBriefWaveformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6824FE401FB6A42100073271 /* SVBriefWaveformCell.swift */; };
+		6824FE431FB6B21000073271 /* SVFullWaveformItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6824FE421FB6B21000073271 /* SVFullWaveformItemCell.swift */; };
 		6846010A1FB3286E004F8DF8 /* 4_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = 684601091FB3286E004F8DF8 /* 4_tracks_audio.mov */; };
 		6846011C1FB4676E004F8DF8 /* SVMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6846011B1FB4676E004F8DF8 /* SVMainViewController.swift */; };
 		68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECE801FB1AC9E00C4942A /* AppDelegate.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6824FE401FB6A42100073271 /* SVBriefWaveformCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVBriefWaveformCell.swift; sourceTree = "<group>"; };
+		6824FE421FB6B21000073271 /* SVFullWaveformItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVFullWaveformItemCell.swift; sourceTree = "<group>"; };
 		684601011FB3280F004F8DF8 /* 1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.m4a; sourceTree = "<group>"; };
 		684601021FB32813004F8DF8 /* 2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.m4a; sourceTree = "<group>"; };
 		684601031FB32818004F8DF8 /* 3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3.m4a; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */,
+				6824FE401FB6A42100073271 /* SVBriefWaveformCell.swift */,
+				6824FE421FB6B21000073271 /* SVFullWaveformItemCell.swift */,
 			);
 			path = WaveFormView;
 			sourceTree = "<group>";
@@ -336,6 +342,8 @@
 				DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */,
 				68CECE811FB1AC9E00C4942A /* AppDelegate.swift in Sources */,
 				DAC74DEF1FB27AF0007CAD88 /* SVSoundLoader.swift in Sources */,
+				6824FE431FB6B21000073271 /* SVFullWaveformItemCell.swift in Sources */,
+				6824FE411FB6A42100073271 /* SVBriefWaveformCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

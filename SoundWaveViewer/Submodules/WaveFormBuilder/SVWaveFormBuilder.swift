@@ -18,8 +18,16 @@ enum SVWaveFormBuilderError:Error {
 }
 
 struct SVWaveForm {
+    
     var pcmDatas:[Float32]!
-    var downsamplePCMDatas:[CGFloat]!
+    var briefPCMDatas:[CGFloat]!
+    
+    private var thumbnail:UIImage?
+    
+    func thumbnail(size:CGSize, completion:@escaping((_ image:UIImage?, _ error:Error?) -> Void)) {
+        
+//        completion()
+    }
 }
 
 final class SVWaveFormBuilder {
@@ -59,7 +67,7 @@ final class SVWaveFormBuilder {
             }
             var waveform = SVWaveForm()
             waveform.pcmDatas = Array(UnsafeBufferPointer(start: floatChannelData[0], count:Int(pcmBuffer.frameLength)))
-            waveform.downsamplePCMDatas = downsamplePCMDatas(pcmDatas:waveform.pcmDatas, widthInPixel:briefWaveformWidth)
+            waveform.briefPCMDatas = downsamplePCMDatas(pcmDatas:waveform.pcmDatas, targetDownsampleLength:briefWaveformWidth)
             DispatchQueue.main.async {
                 completion(waveform, nil)
             }
@@ -67,15 +75,15 @@ final class SVWaveFormBuilder {
         
         
     }
-    class func downsamplePCMDatas(pcmDatas:[Float32], widthInPixel:Int) -> [CGFloat]! {
+    class func downsamplePCMDatas(pcmDatas:[Float32], targetDownsampleLength:Int) -> [CGFloat]! {
         
-        let downsampleLength = widthInPixel
-        let stride = Int(pcmDatas.count / downsampleLength)
+        let stride = Int(pcmDatas.count / targetDownsampleLength)
         let filter = [Float](repeating:1.0 / Float(stride), count: stride)
-        var downsampleBuffer = [Float](repeating: 0.0, count: downsampleLength)
+        var downsampleBuffer = [Float](repeating: 0.0, count: targetDownsampleLength)
         
-        vDSP_desamp(pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(downsampleLength), vDSP_Length(stride))
+        vDSP_desamp(pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(targetDownsampleLength), vDSP_Length(stride))
         return downsampleBuffer.map{CGFloat($0)}
         
     }
+    
 }
