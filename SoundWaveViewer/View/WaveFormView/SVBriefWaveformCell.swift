@@ -42,10 +42,8 @@ final class SVBriefWaveformCell: UITableViewCell {
     }
     
     deinit {
-        
         if let thumbnailTask = self.thumbnailTask {
             thumbnailTask.cancel()
         }
-        
     }
 }

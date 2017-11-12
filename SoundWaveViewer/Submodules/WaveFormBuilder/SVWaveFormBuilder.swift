@@ -27,8 +27,20 @@ class SVTrack {
     var asset:AVAsset!
     var assetTrack:AVAssetTrack!
     var pcmDatas:[Float]!
+    
     private var thumbnail:UIImage?
     
+    func numberOfWaveformSegments(samplesPerPixel:Int!, segmentWidth:Int!) -> Int {
+        var totalWidth = Double(pcmDatas.count) / Double(samplesPerPixel)
+        if totalWidth > floor(totalWidth) {
+            totalWidth = floor(totalWidth) + 1
+        }
+        var numberOfSegment = totalWidth / Double(segmentWidth)
+        if numberOfSegment > floor(numberOfSegment) {
+            numberOfSegment = floor(numberOfSegment) + 1
+        }
+        return Int(numberOfSegment)
+    }
     func thumbnail(size:CGSize, completion:@escaping((_ image:UIImage?, _ error:Error?) -> Void)) -> Operation! {
         
         return BlockOperation { [weak self] in
@@ -44,7 +56,7 @@ class SVTrack {
                 return
             }
             
-            guard let downsampledPCMDatas = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: self!.pcmDatas, targetDownsampleLength: Int(size.width)) else {
+            guard let downsampledPCMDatas = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: self!.pcmDatas, targetDownsampleLength: Int(size.width * 2)) else {
                 DispatchQueue.main.async {
                     completion(nil, SVWaveFormError.failedToCreateDownsamplePCMData)
                 }
@@ -59,8 +71,6 @@ class SVTrack {
                 return
             }
             context.setAlpha(1.0)
-            context.setFillColor(UIColor.yellow.cgColor)
-            context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
             context.setLineWidth(0.5)
             let path = CGMutablePath()
             
@@ -69,7 +79,7 @@ class SVTrack {
             
             path.move(to: CGPoint(x: 0, y: centerY))
             for (x, sample) in downsampledPCMDatas.enumerated() {
-                let nextPoint = CGPoint(x: CGFloat(x), y: centerY + (maxLength * CGFloat(sample)))
+                let nextPoint = CGPoint(x: CGFloat(x) / 2.0, y: centerY + (maxLength * CGFloat(sample)))
                 path.addLine(to: nextPoint)
                 path.move(to: nextPoint)
             }
@@ -91,7 +101,7 @@ class SVTrack {
 
 final class SVWaveFormBuilder {
     class func buildPCMData(asset:AVAsset!, track:AVAssetTrack!) throws -> [Float]? {
-        var pcmDatas = [Float32]()
+        var pcmDatas = [Float]()
         guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {
             throw SVWaveFormError.failedToGetStreamBasicDescription
         }
@@ -116,7 +126,7 @@ final class SVWaveFormBuilder {
                 if let nextSampleBuffer = trackOutput.copyNextSampleBuffer() {
                     if let pcmBlock = CMSampleBufferGetDataBuffer(nextSampleBuffer) {
                         let pcmBlockSize = CMBlockBufferGetDataLength(pcmBlock)
-                        let pcmBlockArray = [Float32](repeating:0.0, count:pcmBlockSize/4)
+                        let pcmBlockArray = [Float](repeating:0.0, count:pcmBlockSize/4)
                         let blockPointer = UnsafeMutablePointer(mutating:pcmBlockArray)
                         CMBlockBufferCopyDataBytes(pcmBlock, 0, pcmBlockSize, blockPointer)
                         pcmDatas.append(contentsOf: pcmBlockArray)
@@ -134,118 +144,6 @@ final class SVWaveFormBuilder {
         }
         return pcmDatas.map{Float($0)}
     }
-//    class func buildWaveform(asset:AVAsset!, track:AVAssetTrack!, briefWaveformWidth:Int, completion:@escaping((_ waveform:SVTrack?, _ error:Error?) -> Void)) {
-//        
-//        DispatchQueue.global().async {
-//            var waveform = SVTrack()
-//            waveform.asset = asset
-//            waveform.assetTrack = track
-//            waveform.pcmDatas = [Float]()
-//            do {
-//                guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {
-//                    DispatchQueue.main.async {
-//                        completion(nil, SVWaveFormError.failedToGetStreamBasicDescription)
-//                    }
-//                    return
-//                }
-//                let basicDescObj = basicDesc.pointee
-//                let outputSettings:[String:Any] = [AVFormatIDKey: kAudioFormatLinearPCM,
-//                                                   AVSampleRateKey: basicDescObj.mSampleRate,
-//                                                   AVNumberOfChannelsKey: basicDescObj.mChannelsPerFrame,
-//                                                   AVLinearPCMBitDepthKey:32,
-//                                                   AVLinearPCMIsBigEndianKey:false,
-//                                                   AVLinearPCMIsFloatKey:true,
-//                                                   AVLinearPCMIsNonInterleaved: true]
-//                
-//                let reader = try AVAssetReader(asset: asset)
-//                let trackOutput = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings)
-//                reader.add(trackOutput)
-//                reader.startReading()
-//                
-//                
-//                while AVAssetReaderStatus.completed != reader.status {
-//                    switch reader.status {
-//                    case .reading:
-//                        if let nextSampleBuffer = trackOutput.copyNextSampleBuffer() {
-//                            if let pcmBlock = CMSampleBufferGetDataBuffer(nextSampleBuffer) {
-//                                let pcmBlockSize = CMBlockBufferGetDataLength(pcmBlock)
-//                                let pcmBlockArray = [Float32](repeating:0.0, count:pcmBlockSize/4)
-//                                let blockPointer = UnsafeMutablePointer(mutating:pcmBlockArray)
-//                                CMBlockBufferCopyDataBytes(pcmBlock, 0, pcmBlockSize, blockPointer)
-//                                waveform.pcmDatas.append(contentsOf: pcmBlockArray)
-//                            }else {
-//                                DispatchQueue.main.async {
-//                                    completion(nil, SVWaveFormError.failedToGetCMSampleBufferGetDataBuffer)
-//                                }
-//                                
-//                                return
-//                            }
-//                        }
-//                        break
-//                    case .cancelled, .unknown, .failed:
-//                        DispatchQueue.main.async {
-//                            completion(nil, SVWaveFormError.failedReadingAudioTrack(readerStaus: reader.status))
-//                        }
-//                        return
-//                    case .completed:
-//                        break
-//                    }
-//                    
-//                }
-//            } catch {
-//                completion(nil, error)
-//            }
-//            
-//            DispatchQueue.main.async {
-//                completion(waveform, nil)
-//            }
-//        }
-//        
-//        
-//    }
-//    class func buildWaveform(mediaURL:URL!, briefWaveformWidth:Int, completion:@escaping((_ waveform:SVTrack?, _ error:Error?) -> Void)) {
-//        
-//        DispatchQueue.global().async {
-//            var file:AVAudioFile!
-//            do {
-//                
-//                file = try AVAudioFile(forReading: mediaURL)
-//            } catch {
-//                completion(nil, error)
-//            }
-//            guard nil != file else {
-//                completion(nil, SVWaveFormError.failedToReadAudioFile(url: mediaURL))
-//                return
-//            }
-//            
-//            guard let pcmFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount, interleaved: false) else {
-//                completion(nil, SVWaveFormError.failedToCreatePCMFormatObject)
-//                return
-//            }
-//            
-//            guard let pcmBuffer = AVAudioPCMBuffer(pcmFormat: pcmFormat, frameCapacity: UInt32(file.length)) else {
-//                completion(nil, SVWaveFormError.failedToAllocatePCMBufferObject)
-//                return
-//            }
-//            do {
-//                try file.read(into: pcmBuffer)
-//            } catch {
-//                completion(nil, error)
-//            }
-//            
-//            guard let floatChannelData = pcmBuffer.floatChannelData else {
-//                completion(nil, SVWaveFormError.cannotFoundFloatDataFromPCMBuffer)
-//                return
-//            }
-//            var waveform = SVTrack()
-//            waveform.pcmDatas = Array(UnsafeBufferPointer(start: floatChannelData[0], count:Int(pcmBuffer.frameLength)))
-//            DispatchQueue.main.async {
-//                completion(waveform, nil)
-//            }
-//        }
-//        
-//        
-//    }
     class func downsamplePCMDatas(pcmDatas:[Float], targetDownsampleLength:Int) -> [Float]! {
         
         let stride = Int(pcmDatas.count / targetDownsampleLength)

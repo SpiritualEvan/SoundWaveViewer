@@ -10,7 +10,7 @@ import UIKit
 import MobileCoreServices
 
 final class SVMainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     var waveformViewController:SVWaveFormViewController!
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     @IBAction func newFilePressed(_ sender: Any) {
         
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {

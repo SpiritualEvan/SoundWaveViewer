@@ -10,7 +10,10 @@ import UIKit
 
 final class SVWaveFormViewController: UIViewController {
     
-    let SVWaveformCellIdentifier = "SVWaveformCellIdentifier"
+    let SVBriefWaveformCellIdentifier = "SVBriefWaveformCellIdentifier"
+    let SVFullWaveformItemCellIdentifier = "SVFullWaveformItemCellIdentifier"
+    let SamplePerPixelForLargeWaveform = 10
+    
     var media:SVMedia?
     @IBOutlet weak var tracksView: UITableView!
     @IBOutlet weak var waveFormView: UIScrollView!
@@ -40,13 +43,11 @@ final class SVWaveFormViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
 }
 extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier:SVWaveformCellIdentifier , for: indexPath) as! SVBriefWaveformCell
+        let cell = tableView.dequeueReusableCell(withIdentifier:SVBriefWaveformCellIdentifier , for: indexPath) as! SVBriefWaveformCell
         cell.setup(waveform: media!.tracks[indexPath.row])
         return cell
     }
@@ -58,3 +59,23 @@ extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
         return media?.tracks.count ?? 0
     }
 }
+extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDataSource
+{
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SVFullWaveformItemCellIdentifier, for: indexPath)
+        return cell
+    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let loadedMedia = media,
+            let indexPathOfSelectedTrack = tracksView.indexPathForSelectedRow else {
+            return 0
+        }
+        
+        let selectedTrack = loadedMedia.tracks[indexPathOfSelectedTrack.row]
+        return Int(selectedTrack.pcmDatas.count / SamplePerPixelForLargeWaveform) % selectedTrack.pcmDatas.count % SamplePerPixelForLargeWaveform
+    }
+}
+
