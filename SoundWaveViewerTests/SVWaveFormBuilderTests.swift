@@ -56,17 +56,7 @@ class SVWaveFormBuilderTests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertNotNil(waveformFromTrack!.pcmDatas)
             XCTAssertTrue(0 < waveformFromTrack!.pcmDatas.count)
-
-            let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
-            SVWaveFormBuilder.buildWaveform(mediaURL: URL(fileURLWithPath:mediaPath!), briefWaveformWidth:320) { (waveformFromFile, error) in
-                XCTAssertNotNil(waveformFromFile)
-                XCTAssertNil(error)
-                XCTAssertNotNil(waveformFromFile!.pcmDatas)
-                XCTAssertTrue(0 < waveformFromFile!.pcmDatas.count)
-                XCTAssertEqual(waveformFromFile!.pcmDatas, waveformFromTrack!.pcmDatas)
-                onNextExpectation.fulfill()
-            }
-            
+            onNextExpectation.fulfill()
         }
         
         
