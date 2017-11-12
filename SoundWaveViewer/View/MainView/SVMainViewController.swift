@@ -19,9 +19,6 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
             return viewController is SVWaveFormViewController
         }!
         waveformViewController = childViewControllers[indexOfWaveformVC] as! SVWaveFormViewController
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         waveformViewController.loadTracks(mediaURL:URL(fileURLWithPath: Bundle.main.path(forResource: "4_tracks_audio", ofType: "mov")!))
     }
     override func didReceiveMemoryWarning() {
