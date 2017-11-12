@@ -32,7 +32,7 @@ class SVTrack {
     
     var asset:AVAsset!
     var assetTrack:AVAssetTrack!
-    var pcmDatas:[Float]!
+    var pcmDatas = [Float]()
     var maxLength:Float = 0.0
     private var thumbnail:UIImage?
     
@@ -79,9 +79,10 @@ class SVTrack {
             }
             
         }
+        
+        
         var maxPCMData:Float = 0.0
         var minPCMData:Float = 0.0
-        
         vDSP_maxv(pcmDatas, 1, &maxPCMData, vDSP_Length(pcmDatas.count))
         vDSP_minv(pcmDatas, 1, &minPCMData, vDSP_Length(pcmDatas.count))
         self.maxLength = fabs(minPCMData) > maxPCMData ? fabs(minPCMData) : maxPCMData
@@ -105,15 +106,15 @@ class SVTrack {
             guard nil != self else {
                 return
             }
+            guard let strongSelf = self else {
+                return
+            }
             
             let samplePerSegment = Int(segmentDescription.imageSize.width) * segmentDescription.samplesPerPixel
             let fromIndex = samplePerSegment * segmentDescription.indexOfSegment
-            var toIndex = fromIndex + samplePerSegment
-            if toIndex > self!.pcmDatas.count {
-                toIndex = self!.pcmDatas.count
-            }
-            let samplesForSegment = [Float](self!.pcmDatas[fromIndex ..< toIndex])
-            let downsampleData = SVTrack.downsamplePCMDatas(pcmDatas: samplesForSegment, targetDownsampleLength: Int(segmentDescription.imageSize.width), maxLength: self!.maxLength)
+            let toIndex = fromIndex + samplePerSegment
+            let segmentLength = toIndex > strongSelf.pcmDatas.count ? strongSelf.pcmDatas.count : samplePerSegment
+            let downsampleData = strongSelf.downsamplePCMSegment(range: NSMakeRange(fromIndex, segmentLength), targetDownsampleLength: Int(segmentDescription.imageSize.width))
             
             UIGraphicsBeginImageContextWithOptions(segmentDescription.imageSize, false, UIScreen.main.scale)
             guard let context = UIGraphicsGetCurrentContext() else {
@@ -141,7 +142,7 @@ class SVTrack {
             
             let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            self!.thumbnail = thumbnailImage
+            strongSelf.thumbnail = thumbnailImage
             DispatchQueue.main.async {
                 completion(thumbnailImage, nil)
             }
@@ -199,14 +200,13 @@ class SVTrack {
             }
         }
     }
-    class func downsamplePCMDatas(pcmDatas:[Float], targetDownsampleLength:Int, maxLength:Float) -> [Float] {
+    func downsamplePCMSegment(range:NSRange, targetDownsampleLength:Int) -> [Float] {
 
         let stride = Int(pcmDatas.count / targetDownsampleLength)
         let filter = [Float](repeating:1.0 / Float(stride), count: stride)
         var downsampleBuffer = [Float](repeating: 0.0, count: targetDownsampleLength)
         vDSP_desamp(pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(targetDownsampleLength), vDSP_Length(stride))
 
-        var maxLength = maxLength
         vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(targetDownsampleLength))
         return downsampleBuffer
 

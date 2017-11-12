@@ -18,17 +18,24 @@ final class SVWaveFormViewController: UIViewController {
     @IBOutlet weak var tracksView: UITableView!
     @IBOutlet weak var detailWaveformView: UICollectionView!
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func loadTracks(mediaURL:URL!) {
+        view.isUserInteractionEnabled = false
+        loadingIndicator.startAnimating()
         
-        SVSoundLoader.loadTracks(mediaURL: mediaURL) { [weak self] (media, error) in
-
+        SVTrackLoader.loadTracks(mediaURL: mediaURL) { [weak self] (media, error) in
+            
             guard let weakSelf = self else {
                 return
             }
+            
+            self!.view.isUserInteractionEnabled = true
+            self!.loadingIndicator.stopAnimating()
             
             guard nil == error, let loadedMedia = media else {
                 let alertVC = UIAlertController(title: nil, message: error!.localizedDescription, preferredStyle: .alert)

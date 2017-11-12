@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-enum SVSoundLoaderError:CustomNSError {
+enum SVTrackLoaderError:CustomNSError {
     
     case UnknownError
     case NoAudioTracksFounded
@@ -27,7 +27,7 @@ struct SVMedia {
     let tracks:[SVTrack]!
 }
 
-final class SVSoundLoader {
+final class SVTrackLoader {
 
     class func loadTracks(mediaURL:URL!, completion:@escaping ((_ media:SVMedia?, _ error:Error?)->Void)) {
         
@@ -37,7 +37,7 @@ final class SVSoundLoader {
             let asset = AVURLAsset(url: mediaURL)
             let audioTracks = asset.tracks(withMediaType: .audio)
             guard 0 < audioTracks.count else {
-                completion(nil, SVSoundLoaderError.NoAudioTracksFounded)
+                completion(nil, SVTrackLoaderError.NoAudioTracksFounded)
                 return
             }
             var tracks = [SVTrack]()

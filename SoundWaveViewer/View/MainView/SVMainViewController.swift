@@ -19,12 +19,15 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
             return viewController is SVWaveFormViewController
         }!
         waveformViewController = childViewControllers[indexOfWaveformVC] as! SVWaveFormViewController
-        waveformViewController.loadTracks(mediaURL:URL(fileURLWithPath: Bundle.main.path(forResource: "4_tracks_audio", ofType: "mov")!))
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    @IBAction func loadDemoTrackPressed(_ sender: Any) {
+        waveformViewController.loadTracks(mediaURL:URL(fileURLWithPath: Bundle.main.path(forResource: "4_tracks_audio", ofType: "mov")!))
+    }
     @IBAction func newFilePressed(_ sender: Any) {
         
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
@@ -35,8 +38,7 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
             self.present(imagePickerVC, animated: true, completion: nil)
         }else {
             
-        }
-        
+        }   
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
