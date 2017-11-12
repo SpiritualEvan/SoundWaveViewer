@@ -24,8 +24,7 @@ enum SVSoundLoaderError:CustomNSError {
 
 struct SVMedia {
     let asset:AVAsset!
-//    let assetTracks:[AVAssetTrack]!
-    let tracks:[SVWaveForm]!
+    let tracks:[SVTrack]!
 }
 
 final class SVSoundLoader {
@@ -41,9 +40,9 @@ final class SVSoundLoader {
                 completion(nil, SVSoundLoaderError.NoAudioTracksFounded)
                 return
             }
-            var tracks = [SVWaveForm]()
+            var tracks = [SVTrack]()
             for audioTrack in audioTracks {
-                var track = SVWaveForm()
+                let track = SVTrack()
                 track.asset = asset
                 track.assetTrack = audioTrack
                 do {
@@ -57,8 +56,6 @@ final class SVSoundLoader {
                 tracks.append(track)
                 
             }
-//            let loadedMedia = SVMedia(asset: asset, assetTracks: audioTracks)
-//            SVMedia(asset: asset, assetTracks: , tracks: <#T##[SVWaveForm]!#>)
             let loadedMedia = SVMedia(asset: asset, tracks: tracks)
             DispatchQueue.main.async {
                 completion(loadedMedia, nil)

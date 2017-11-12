@@ -39,52 +39,70 @@ class SVWaveFormBuilderTests: XCTestCase {
         
         
     }
-    func testBuildWaveFormFromFile() {
-        
+//    func testBuildWaveFormFromFile() {
+//
+//        // test for multi track audios
+//        let onNextExpectation = expectation(description: "onNextExpectation")
+//        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+//        SVWaveFormBuilder.buildWaveform(mediaURL: URL(fileURLWithPath:mediaPath!), briefWaveformWidth:320) { (waveform, error) in
+//            XCTAssertNotNil(waveform)
+//            XCTAssertNil(error)
+//            XCTAssertNotNil(waveform!.pcmDatas)
+//            XCTAssertTrue(0 < waveform!.pcmDatas.count)
+//            onNextExpectation.fulfill()
+//        }
+//
+//        self.waitForExpectations(timeout: 10) { (error) in
+//            guard nil == error else {
+//                XCTFail((error?.localizedDescription)!)
+//                return
+//            }
+//        }
+//    }
+//    func testBuildWaveFormFromAVAssetTrack() {
+//
+//        // test for multi track audios
+//        let onNextExpectation = expectation(description: "onNextExpectation")
+//        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+//        let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
+//        let audioTrack = asset.tracks(withMediaType: .audio)[0]
+//        SVWaveFormBuilder.buildWaveform(asset:asset, track: audioTrack, briefWaveformWidth: 320) { (waveformFromTrack, error) in
+//            XCTAssertNotNil(waveformFromTrack)
+//            XCTAssertNil(error)
+//            XCTAssertNotNil(waveformFromTrack!.pcmDatas)
+//            XCTAssertTrue(0 < waveformFromTrack!.pcmDatas.count)
+//            onNextExpectation.fulfill()
+//        }
+//
+//
+//
+//        self.waitForExpectations(timeout: 100) { (error) in
+//            guard nil == error else {
+//                XCTFail((error?.localizedDescription)!)
+//                return
+//            }
+//        }
+//    }
+    func testDownsamplingRealPCMData() {
         // test for multi track audios
-        let onNextExpectation = expectation(description: "onNextExpectation")
-        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
-        SVWaveFormBuilder.buildWaveform(mediaURL: URL(fileURLWithPath:mediaPath!), briefWaveformWidth:320) { (waveform, error) in
-            XCTAssertNotNil(waveform)
-            XCTAssertNil(error)
-            XCTAssertNotNil(waveform!.pcmDatas)
-            XCTAssertTrue(0 < waveform!.pcmDatas.count)
-            onNextExpectation.fulfill()
-        }
-    
-        self.waitForExpectations(timeout: 10) { (error) in
-            guard nil == error else {
-                XCTFail((error?.localizedDescription)!)
-                return
-            }
-        }
-    }
-    func testBuildWaveFormFromAVAssetTrack() {
-        
-        // test for multi track audios
-        let onNextExpectation = expectation(description: "onNextExpectation")
         let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
         let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
         let audioTrack = asset.tracks(withMediaType: .audio)[0]
-        SVWaveFormBuilder.buildWaveform(asset:asset, track: audioTrack, briefWaveformWidth: 320) { (waveformFromTrack, error) in
-            XCTAssertNotNil(waveformFromTrack)
-            XCTAssertNil(error)
-            XCTAssertNotNil(waveformFromTrack!.pcmDatas)
-            XCTAssertTrue(0 < waveformFromTrack!.pcmDatas.count)
-            onNextExpectation.fulfill()
-        }
-        
-        
-        
-        self.waitForExpectations(timeout: 100) { (error) in
-            guard nil == error else {
-                XCTFail((error?.localizedDescription)!)
-                return
+        do {
+            let pcmData = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
+            self.measure {
+                let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: pcmData!, targetDownsampleLength: 320)
+                XCTAssertNotNil(downsampleArray)
+                XCTAssertEqual(320, downsampleArray!.count)
             }
+        }catch {
+            XCTFail(error.localizedDescription)
         }
+        
+        
     }
     func testDownsampling1HourSoundA() {
-        let floatArray = [Float32](repeating:1.0, count: 44100 * 60 * 60)
+        let floatArray = [Float](repeating:1.0, count: 44100 * 60 * 60)
         self.measure {
             let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: floatArray, targetDownsampleLength: 10)
             XCTAssertNotNil(downsampleArray)
@@ -97,8 +115,8 @@ class SVWaveFormBuilderTests: XCTestCase {
         
     }
     func testDownsampling1HourSoundB() {
-        var dataArray = [Float32](repeating:1.0, count: 44100 * 60 * 30)
-        dataArray += [Float32](repeating:-1.0, count: 44100 * 60 * 30)
+        var dataArray = [Float](repeating:1.0, count: 44100 * 60 * 30)
+        dataArray += [Float](repeating:-1.0, count: 44100 * 60 * 30)
         self.measure {
             let floatArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: dataArray, targetDownsampleLength: 20)
             XCTAssertNotNil(floatArray)
@@ -113,9 +131,9 @@ class SVWaveFormBuilderTests: XCTestCase {
         
         let onNextExpectation = expectation(description: "onNextExpectation")
         
-        var dataArray = [Float32](repeating:1.0, count: 44100 * 60 * 30)
-        dataArray += [Float32](repeating:-1.0, count: 44100 * 60 * 30)
-        var waveform = SVWaveForm()
+        var dataArray = [Float](repeating:1.0, count: 44100 * 60 * 30)
+        dataArray += [Float](repeating:-1.0, count: 44100 * 60 * 30)
+        var waveform = SVTrack()
         waveform.pcmDatas = dataArray
         let expectImageSize = CGSize(width: 100, height: 120)
         let task = waveform.thumbnail(size: expectImageSize) { (image, error) in

@@ -12,13 +12,11 @@ final class SVWaveFormViewController: UIViewController {
     
     let SVWaveformCellIdentifier = "SVWaveformCellIdentifier"
     var media:SVMedia?
-    var tracks:[SVWaveForm]!
     @IBOutlet weak var tracksView: UITableView!
     @IBOutlet weak var waveFormView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tracks = [SVWaveForm]()
     }
     func loadTracks(mediaURL:URL!) {
         
@@ -28,18 +26,13 @@ final class SVWaveFormViewController: UIViewController {
                 return
             }
             
-            guard nil != error, let loadedMedia = media else {
+            guard nil == error, let loadedMedia = media else {
                 let alertVC = UIAlertController(title: nil, message: error!.localizedDescription, preferredStyle: .alert)
                 alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self!.present(alertVC, animated: true, completion: nil)
                 return
             }
             weakSelf.media = loadedMedia
-            weakSelf.tracks = [SVWaveForm]()
-//            for assetTrack in loadedMedia.assetTracks {
-//                weakSelf.tracks.append(SVWaveForm(asset: loadedMedia.asset, assetTrack: assetTrack))
-//            }
-            
             weakSelf.tracksView.reloadData()
         }
         
@@ -53,17 +46,15 @@ final class SVWaveFormViewController: UIViewController {
 extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier:SVWaveformCellIdentifier , for: indexPath) as! SVBriefWaveformCell
+        let cell = tableView.dequeueReusableCell(withIdentifier:SVWaveformCellIdentifier , for: indexPath) as! SVBriefWaveformCell
+        cell.setup(waveform: media!.tracks[indexPath.row])
+        return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
-    }
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let waveformCell = cell as! SVBriefWaveformCell
-        waveformCell.setup(waveform: tracks[indexPath.row])
+        return media?.tracks.count ?? 0
     }
 }

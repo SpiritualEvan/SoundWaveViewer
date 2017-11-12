@@ -19,7 +19,7 @@ final class SVBriefWaveformCell: UITableViewCell {
     @IBOutlet private var thumbnailView:UIImageView!
     private var thumbnailTask:Operation?
     
-    func setup(waveform:SVWaveForm!) {
+    func setup(waveform:SVTrack!) {
         
         if nil != thumbnailTask {
             thumbnailTask!.cancel()
