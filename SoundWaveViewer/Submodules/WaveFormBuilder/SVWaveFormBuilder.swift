@@ -24,6 +24,8 @@ enum SVWaveFormError:Error {
 
 struct SVWaveForm {
     
+    var asset:AVAsset!
+    var assetTrack:AVAssetTrack!
     var pcmDatas:[Float32]!
     var downsampledPCMDatas:[Float32]?
     private var thumbnail:UIImage?
@@ -75,15 +77,58 @@ struct SVWaveForm {
 
     }
 }
-final class SVWaveFormThumbnailBuilder {
-    
-}
+
 final class SVWaveFormBuilder {
-    
+    class func buildPCMData(asset:AVAsset!, track:AVAssetTrack!) throws -> [Float32]? {
+        var pcmDatas = [Float32]()
+        guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {
+            throw SVWaveFormError.failedToGetStreamBasicDescription
+        }
+        let basicDescObj = basicDesc.pointee
+        let outputSettings:[String:Any] = [AVFormatIDKey: kAudioFormatLinearPCM,
+                                           AVSampleRateKey: basicDescObj.mSampleRate,
+                                           AVNumberOfChannelsKey: basicDescObj.mChannelsPerFrame,
+                                           AVLinearPCMBitDepthKey:32,
+                                           AVLinearPCMIsBigEndianKey:false,
+                                           AVLinearPCMIsFloatKey:true,
+                                           AVLinearPCMIsNonInterleaved: true]
+        
+        let reader = try AVAssetReader(asset: asset)
+        let trackOutput = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings)
+        reader.add(trackOutput)
+        reader.startReading()
+        
+        
+        while AVAssetReaderStatus.completed != reader.status {
+            switch reader.status {
+            case .reading:
+                if let nextSampleBuffer = trackOutput.copyNextSampleBuffer() {
+                    if let pcmBlock = CMSampleBufferGetDataBuffer(nextSampleBuffer) {
+                        let pcmBlockSize = CMBlockBufferGetDataLength(pcmBlock)
+                        let pcmBlockArray = [Float32](repeating:0.0, count:pcmBlockSize/4)
+                        let blockPointer = UnsafeMutablePointer(mutating:pcmBlockArray)
+                        CMBlockBufferCopyDataBytes(pcmBlock, 0, pcmBlockSize, blockPointer)
+                        pcmDatas.append(contentsOf: pcmBlockArray)
+                    }else {
+                        throw SVWaveFormError.failedToGetCMSampleBufferGetDataBuffer
+                    }
+                }
+                break
+            case .cancelled, .unknown, .failed:
+                throw SVWaveFormError.failedReadingAudioTrack(readerStaus: reader.status)
+            case .completed:
+                break
+            }
+            
+        }
+        return pcmDatas
+    }
     class func buildWaveform(asset:AVAsset!, track:AVAssetTrack!, briefWaveformWidth:Int, completion:@escaping((_ waveform:SVWaveForm?, _ error:Error?) -> Void)) {
         
         DispatchQueue.global().async {
             var waveform = SVWaveForm()
+            waveform.asset = asset
+            waveform.assetTrack = track
             waveform.pcmDatas = [Float32]()
             do {
                 guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {

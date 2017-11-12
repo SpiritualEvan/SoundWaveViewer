@@ -27,9 +27,10 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (medias, error) in
-            XCTAssertTrue(nil != medias)
-            XCTAssertTrue(4 == medias!.count)
+        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (media, error) in
+            XCTAssertTrue(nil != media)
+            XCTAssertNotNil(media!.asset)
+            XCTAssertEqual(4, media!.tracks.count)
             XCTAssertNil(error)
             onNextExpectation.fulfill()
         }
@@ -49,9 +50,10 @@ class SVSoundLoaderTests: XCTestCase {
         XCTAssertNotNil(mediaPath)
         
         let onNextExpectation = expectation(description: "onNextExpectation")
-        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (medias, error) in
-            XCTAssertTrue(nil != medias)
-            XCTAssertTrue(1 == medias!.count)
+        SVSoundLoader.loadTracks(mediaURL: URL(fileURLWithPath: mediaPath!)) { (media, error) in
+            XCTAssertTrue(nil != media)
+            XCTAssertNotNil(media!.asset)
+            XCTAssertEqual(1, media!.tracks.count)
             XCTAssertNil(error)
             onNextExpectation.fulfill()
         }

@@ -11,8 +11,8 @@ import UIKit
 final class SVWaveFormViewController: UIViewController {
     
     let SVWaveformCellIdentifier = "SVWaveformCellIdentifier"
+    var media:SVMedia?
     var tracks:[SVWaveForm]!
-    
     @IBOutlet weak var tracksView: UITableView!
     @IBOutlet weak var waveFormView: UIScrollView!
     
@@ -22,25 +22,27 @@ final class SVWaveFormViewController: UIViewController {
     }
     func loadTracks(mediaURL:URL!) {
         
-//        SVSoundLoader.loadTracks(mediaURL: mediaURL) { [weak self] (medias, error) in
-//            
-//            guard nil != self else {
-//                return
+        SVSoundLoader.loadTracks(mediaURL: mediaURL) { [weak self] (media, error) in
+
+            guard let weakSelf = self else {
+                return
+            }
+            
+            guard nil != error, let loadedMedia = media else {
+                let alertVC = UIAlertController(title: nil, message: error!.localizedDescription, preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self!.present(alertVC, animated: true, completion: nil)
+                return
+            }
+            weakSelf.media = loadedMedia
+            weakSelf.tracks = [SVWaveForm]()
+//            for assetTrack in loadedMedia.assetTracks {
+//                weakSelf.tracks.append(SVWaveForm(asset: loadedMedia.asset, assetTrack: assetTrack))
 //            }
-//            
-//            guard nil != error, let loadedMedias = medias else {
-//                let alertVC = UIAlertController(title: nil, message: error!.localizedDescription, preferredStyle: .alert)
-//                alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//                self!.present(alertVC, animated: true, completion: nil)
-//                return
-//            }
-//            
-//            SVWaveFormBuilder.buildWaveform(mediaURL: <#T##URL!#>, briefWaveformWidth: <#T##Int#>, completion: <#T##((SVWaveForm?, Error?) -> Void)##((SVWaveForm?, Error?) -> Void)##(SVWaveForm?, Error?) -> Void#>)
-//            
-//        }
-//        
-//        self.tracks = tracks
-//        tracksView.reloadData()
+            
+            weakSelf.tracksView.reloadData()
+        }
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

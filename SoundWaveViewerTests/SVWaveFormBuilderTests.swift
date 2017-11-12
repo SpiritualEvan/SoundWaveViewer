@@ -23,7 +23,22 @@ class SVWaveFormBuilderTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+    func testBuildPCMData() {
+        
+        // test for multi track audios
+        let mediaPath = Bundle(for: type(of: self)).path(forResource: "1", ofType: "m4a")
+        let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
+        let audioTrack = asset.tracks(withMediaType: .audio)[0]
+        do {
+            let pcmData = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
+            XCTAssertNotNil(pcmData)
+            XCTAssertGreaterThan(pcmData!.count, 0)
+        }catch {
+            XCTFail(error.localizedDescription)
+        }
+        
+        
+    }
     func testBuildWaveFormFromFile() {
         
         // test for multi track audios

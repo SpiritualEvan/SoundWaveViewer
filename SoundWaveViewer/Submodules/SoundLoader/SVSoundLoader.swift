@@ -23,15 +23,17 @@ enum SVSoundLoaderError:CustomNSError {
 }
 
 struct SVMedia {
-    let media:AVAsset!
-    
+    let asset:AVAsset!
+//    let assetTracks:[AVAssetTrack]!
+    let tracks:[SVWaveForm]!
 }
 
 final class SVSoundLoader {
 
-    class func loadTracks(mediaURL:URL!, completion:@escaping ((_ medias:[SVMedia]?, _ error:Error?)->Void)) {
+    class func loadTracks(mediaURL:URL!, completion:@escaping ((_ media:SVMedia?, _ error:Error?)->Void)) {
         
         DispatchQueue.global().async {
+            
             
             let asset = AVURLAsset(url: mediaURL)
             let audioTracks = asset.tracks(withMediaType: .audio)
@@ -39,20 +41,27 @@ final class SVSoundLoader {
                 completion(nil, SVSoundLoaderError.NoAudioTracksFounded)
                 return
             }
-            var medias = [SVMedia]()
-            for track in audioTracks {
-                let composition = AVMutableComposition()
-                let audioTrackComposition = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)!
+            var tracks = [SVWaveForm]()
+            for audioTrack in audioTracks {
+                var track = SVWaveForm()
+                track.asset = asset
+                track.assetTrack = audioTrack
                 do {
-                    try audioTrackComposition.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration), of: track, at: kCMTimeZero)
-                    medias.append(SVMedia(media: composition))
+                    track.pcmDatas = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
                 }catch {
-                    completion(nil, error)
+                    DispatchQueue.main.async {
+                        completion(nil, error)
+                    }
+                    return
                 }
+                tracks.append(track)
+                
             }
-            
+//            let loadedMedia = SVMedia(asset: asset, assetTracks: audioTracks)
+//            SVMedia(asset: asset, assetTracks: , tracks: <#T##[SVWaveForm]!#>)
+            let loadedMedia = SVMedia(asset: asset, tracks: tracks)
             DispatchQueue.main.async {
-                completion(medias, nil)
+                completion(loadedMedia, nil)
             }
             
         }
