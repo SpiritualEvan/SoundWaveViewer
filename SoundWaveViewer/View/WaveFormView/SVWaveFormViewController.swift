@@ -12,15 +12,16 @@ final class SVWaveFormViewController: UIViewController {
     
     let SVBriefWaveformCellIdentifier = "SVBriefWaveformCellIdentifier"
     let SVFullWaveformItemCellIdentifier = "SVFullWaveformItemCellIdentifier"
-    let SamplePerPixelForLargeWaveform = 10
+    let SamplePerPixelForLargeWaveform = 800
     
     var media:SVMedia?
     @IBOutlet weak var tracksView: UITableView!
-    @IBOutlet weak var waveFormView: UIScrollView!
+    @IBOutlet weak var detailWaveformView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     func loadTracks(mediaURL:URL!) {
         
         SVSoundLoader.loadTracks(mediaURL: mediaURL) { [weak self] (media, error) in
@@ -58,11 +59,22 @@ extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return media?.tracks.count ?? 0
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        detailWaveformView.reloadData()
+    }
 }
-extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDataSource
+extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SVFullWaveformItemCellIdentifier, for: indexPath)
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SVFullWaveformItemCellIdentifier, for: indexPath) as! SVFullWaveformItemCell
+        
+        guard let indexPathOfSelectedTrack = tracksView.indexPathForSelectedRow else {
+            return cell
+        }
+        
+        let segmentDescription = SVWaveformSegmentDescription(imageSize: cell.frame.size, indexOfSegment: indexPath.row, samplesPerPixel: SamplePerPixelForLargeWaveform)
+        cell.setup(track: media!.tracks[indexPathOfSelectedTrack.row], segmentDescription: segmentDescription)
         return cell
     }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -73,9 +85,18 @@ extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDa
             let indexPathOfSelectedTrack = tracksView.indexPathForSelectedRow else {
             return 0
         }
-        
         let selectedTrack = loadedMedia.tracks[indexPathOfSelectedTrack.row]
-        return Int(selectedTrack.pcmDatas.count / SamplePerPixelForLargeWaveform) % selectedTrack.pcmDatas.count % SamplePerPixelForLargeWaveform
+        let segmentDescription = SVWaveformSegmentDescription(imageSize: collectionView.frame.size, indexOfSegment: 0, samplesPerPixel: SamplePerPixelForLargeWaveform)
+        return selectedTrack.numberOfWaveformSegments(segmentDescription: segmentDescription)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.frame.size
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
     }
 }
 

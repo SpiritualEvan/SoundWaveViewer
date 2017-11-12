@@ -25,9 +25,10 @@ class SVTrackTests: XCTestCase {
     func testNumberOfWaveformSegments() {
         let track = SVTrack()
         track.pcmDatas = [Float](repeating:0.0, count:10000)
-        XCTAssertEqual(track.numberOfWaveformSegments(samplesPerPixel: 10, segmentWidth: 100), 10)
-        XCTAssertEqual(track.numberOfWaveformSegments(samplesPerPixel: 11, segmentWidth: 100), 10)
-        XCTAssertEqual(track.numberOfWaveformSegments(samplesPerPixel: 9, segmentWidth: 3), 371)
+        XCTAssertEqual(track.numberOfWaveformSegments(segmentDescription: SVWaveformSegmentDescription(imageSize: CGSize(width: 100, height: 100), indexOfSegment: 0, samplesPerPixel: 10)), 10)
+        XCTAssertEqual(track.numberOfWaveformSegments(segmentDescription: SVWaveformSegmentDescription(imageSize: CGSize(width: 100, height: 100), indexOfSegment: 0, samplesPerPixel: 11)), 10)
+        XCTAssertEqual(track.numberOfWaveformSegments(segmentDescription: SVWaveformSegmentDescription(imageSize: CGSize(width: 3, height: 100), indexOfSegment: 0, samplesPerPixel: 9)), 371)
+        
     }
     func testGeneratingWaveformWithRange() {
         

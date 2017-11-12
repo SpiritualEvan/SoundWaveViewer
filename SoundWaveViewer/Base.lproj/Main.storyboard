@@ -66,7 +66,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8OB-Xu-A3d">
                                 <rect key="frame" x="0.0" y="20" width="375" height="411"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0fk-rH-fpd">
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0fk-rH-fpd">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -86,18 +86,22 @@
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="CbY-dd-XIW" firstAttribute="leading" secondItem="jie-31-LGP" secondAttribute="leading" id="1iS-5M-icC"/>
-                                            <constraint firstItem="CbY-dd-XIW" firstAttribute="top" secondItem="jie-31-LGP" secondAttribute="top" id="VMp-Z7-a3T"/>
-                                            <constraint firstAttribute="bottom" secondItem="CbY-dd-XIW" secondAttribute="bottom" id="aah-au-xzg"/>
-                                            <constraint firstAttribute="trailing" secondItem="CbY-dd-XIW" secondAttribute="trailing" id="g1B-DB-OVn"/>
+                                            <constraint firstAttribute="trailing" secondItem="CbY-dd-XIW" secondAttribute="trailing" id="G1B-CH-yFz"/>
+                                            <constraint firstAttribute="bottom" secondItem="CbY-dd-XIW" secondAttribute="bottom" id="NEd-pU-cW2"/>
+                                            <constraint firstItem="CbY-dd-XIW" firstAttribute="leading" secondItem="jie-31-LGP" secondAttribute="leading" id="VbD-VJ-iCA"/>
+                                            <constraint firstItem="CbY-dd-XIW" firstAttribute="top" secondItem="jie-31-LGP" secondAttribute="top" id="oxF-nO-ig8"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="waveformImageView" destination="CbY-dd-XIW" id="fvV-gz-K2K"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="eK3-kf-Vko" id="2Z1-rk-JT4"/>
+                                    <outlet property="delegate" destination="eK3-kf-Vko" id="qJn-kw-MLj"/>
+                                </connections>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-OL-tL7">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="51" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f6E-OL-tL7">
                                 <rect key="frame" x="0.0" y="439" width="375" height="134"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -105,14 +109,14 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SVBriefWaveformCellIdentifier" id="7w9-SV-zhm" customClass="SVBriefWaveformCell" customModule="SoundWaveViewer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7w9-SV-zhm" id="uB1-cC-GKe">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kvt-kK-fVr">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50.5"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -146,6 +150,7 @@
                         <viewLayoutGuide key="safeArea" id="pSf-ki-WJW"/>
                     </view>
                     <connections>
+                        <outlet property="detailWaveformView" destination="8OB-Xu-A3d" id="pR3-dY-Gkg"/>
                         <outlet property="tracksView" destination="f6E-OL-tL7" id="Tt9-D0-1Hw"/>
                     </connections>
                 </viewController>

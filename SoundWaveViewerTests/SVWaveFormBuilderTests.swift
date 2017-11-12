@@ -28,9 +28,9 @@ class SVWaveFormBuilderTests: XCTestCase {
         let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
         let audioTrack = asset.tracks(withMediaType: .audio)[0]
         do {
-            let pcmData = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
-            XCTAssertNotNil(pcmData)
-            XCTAssertGreaterThan(pcmData!.count, 0)
+            let track = try SVTrack(asset: asset, track: audioTrack)
+            XCTAssertNotNil(track.pcmDatas)
+            XCTAssertGreaterThan(track.pcmDatas!.count, 0)
         }catch {
             XCTFail(error.localizedDescription)
         }
@@ -43,11 +43,11 @@ class SVWaveFormBuilderTests: XCTestCase {
         let asset = AVURLAsset(url: URL(fileURLWithPath:mediaPath!))
         let audioTrack = asset.tracks(withMediaType: .audio)[0]
         do {
-            let pcmData = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
+            let track = try SVTrack(asset: asset, track: audioTrack)
             self.measure {
-                let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: pcmData!, targetDownsampleLength: 320)
+                let downsampleArray = track.downsamplePCMDatas(targetDownsampleLength: 320)
                 XCTAssertNotNil(downsampleArray)
-                XCTAssertEqual(320, downsampleArray!.count)
+                XCTAssertEqual(320, downsampleArray.count)
             }
         }catch {
             XCTFail(error.localizedDescription)
@@ -58,13 +58,13 @@ class SVWaveFormBuilderTests: XCTestCase {
     func testDownsampling1HourSoundA() {
         let floatArray = [Float](repeating:1.0, count: 44100 * 60 * 60)
         self.measure {
-            let downsampleArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: floatArray, targetDownsampleLength: 10)
+            let downsampleArray = SVTrack.downsamplePCMDatas(pcmDatas: floatArray, targetDownsampleLength: 10, maxLength: 1.0)
             XCTAssertNotNil(downsampleArray)
-            XCTAssertEqual(10, downsampleArray!.count)
+            XCTAssertEqual(10, downsampleArray.count)
             
             // vDSP_desamp doesn't calculate accurately
-            XCTAssertTrue(0.1 > fabs(downsampleArray!.first! - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(downsampleArray!.last! - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(downsampleArray.first! - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(downsampleArray.last! - 1.0)) // expect 1.0
         }
         
     }
@@ -72,13 +72,37 @@ class SVWaveFormBuilderTests: XCTestCase {
         var dataArray = [Float](repeating:1.0, count: 44100 * 60 * 30)
         dataArray += [Float](repeating:-1.0, count: 44100 * 60 * 30)
         self.measure {
-            let floatArray = SVWaveFormBuilder.downsamplePCMDatas(pcmDatas: dataArray, targetDownsampleLength: 20)
+            let floatArray = SVTrack.downsamplePCMDatas(pcmDatas: dataArray, targetDownsampleLength: 20, maxLength: 1.0)
             XCTAssertNotNil(floatArray)
-            XCTAssertEqual(20, floatArray!.count)
-            XCTAssertTrue(0.1 > fabs(floatArray!.first! - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(floatArray![9] - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(floatArray![10] + 1.0)) // expect -1.0
-            XCTAssertTrue(0.1 > fabs(floatArray!.last! + 1.0)) // expect -1.0
+            XCTAssertEqual(20, floatArray.count)
+            XCTAssertTrue(0.1 > fabs(floatArray.first! - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(floatArray[9] - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(floatArray[10] + 1.0)) // expect -1.0
+            XCTAssertTrue(0.1 > fabs(floatArray.last! + 1.0)) // expect -1.0
+        }
+    }
+    func testWaveformImageWithWaveformSegmentInformation() {
+        let onNextExpectation = expectation(description: "onNextExpectation")
+        
+        var dataArray = [Float](repeating:1.0, count: 44100 * 60 * 30)
+        dataArray += [Float](repeating:-1.0, count: 44100 * 60 * 30)
+        let waveform = SVTrack()
+        waveform.pcmDatas = dataArray
+        let segmentDescription = SVWaveformSegmentDescription(imageSize: CGSize(width: 10.0, height: 10.0), indexOfSegment: 2, samplesPerPixel: 20)
+        let task = waveform.waveformImage(segmentDescription: segmentDescription) { (image, error) in
+            XCTAssertNotNil(image)
+            XCTAssertEqual(segmentDescription.imageSize, image!.size)
+            XCTAssertNil(error)
+            onNextExpectation.fulfill()
+        }
+        XCTAssertNotNil(task)
+        task.start()
+        
+        self.waitForExpectations(timeout: 3) { (error) in
+            guard nil == error else {
+                XCTFail((error?.localizedDescription)!)
+                return
+            }
         }
     }
     func testGeneratingWaveformThumbnail() {

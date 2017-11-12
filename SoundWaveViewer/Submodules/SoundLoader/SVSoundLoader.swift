@@ -42,11 +42,9 @@ final class SVSoundLoader {
             }
             var tracks = [SVTrack]()
             for audioTrack in audioTracks {
-                let track = SVTrack()
-                track.asset = asset
-                track.assetTrack = audioTrack
+                let track:SVTrack!
                 do {
-                    track.pcmDatas = try SVWaveFormBuilder.buildPCMData(asset: asset, track: audioTrack)
+                    track = try SVTrack(asset: asset, track: audioTrack)
                 }catch {
                     DispatchQueue.main.async {
                         completion(nil, error)
