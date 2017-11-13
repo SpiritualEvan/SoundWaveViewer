@@ -55,6 +55,13 @@ final class SVMainViewController: UIViewController {
             importSourceActionSheet.addAction(sourceButton)
         }
         
+        let iCloudDriverButton = UIAlertAction(title: "Cloud Services", style: .default) { (action) in
+            self.presentDocumentPickerController()
+        }
+        importSourceActionSheet.addAction(iCloudDriverButton)
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        importSourceActionSheet.addAction(cancelButton)
         self.present(importSourceActionSheet, animated: true, completion: nil)
     }
 }
@@ -102,7 +109,22 @@ extension SVMainViewController : MPMediaPickerControllerDelegate {
         mediaPicker.dismiss(animated: true, completion: nil)
     }
 }
-//extension SVMainViewController : UIDocumentPickerDelegate {
-//    let documentPickerController =
-//}
+extension SVMainViewController : UIDocumentPickerDelegate {
+    func presentDocumentPickerController() {
+        let documentPickerController = UIDocumentPickerViewController(documentTypes: [kUTTypeMovie as String, kUTTypeAudio as String], in: UIDocumentPickerMode.import)
+        documentPickerController.delegate = self
+        documentPickerController.modalPresentationStyle = .formSheet
+        present(documentPickerController, animated: true, completion: nil)
+    }
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard 0 < urls.count else {
+            return
+        }
+        waveformViewController.loadTracks(mediaURL:urls[0])
+        controller.dismiss(animated: true, completion: nil)
+    }
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
 

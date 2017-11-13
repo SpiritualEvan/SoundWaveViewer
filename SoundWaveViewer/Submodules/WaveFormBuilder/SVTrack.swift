@@ -111,7 +111,11 @@ class SVTrack {
             }
             
             do {
-                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: strongSelf.waveformData, imageSize: segmentDescription.size)
+                let samplePerSegment = Int(segmentDescription.size.width)
+                let fromIndex = samplePerSegment * segmentDescription.indexOfSegment
+                let toIndex = fromIndex + samplePerSegment
+                let partialWaveformData = [WaveformMinMax](strongSelf.waveformData[fromIndex ..< Swift.min(toIndex, strongSelf.waveformData.count)])
+                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: partialWaveformData, imageSize: segmentDescription.size)
             }catch {
                 completion(nil, error)
                 return
