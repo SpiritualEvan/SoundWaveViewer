@@ -33,6 +33,8 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
     }
     @IBAction func newFilePressed(_ sender: Any) {
         
+        
+        
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
             let imagePickerVC = UIImagePickerController()
             imagePickerVC.sourceType = .savedPhotosAlbum
