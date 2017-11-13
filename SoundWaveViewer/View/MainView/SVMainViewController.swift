@@ -25,7 +25,10 @@ final class SVMainViewController: UIViewController, UIImagePickerControllerDeleg
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func loadDemoTrackPressed(_ sender: Any) {
+    @IBAction func demo13TracksPressed(_ sender: Any) {
+        waveformViewController.loadTracks(mediaURL:URL(fileURLWithPath: Bundle.main.path(forResource: "13_tracks_audio", ofType: "mov")!))
+    }
+    @IBAction func demo4TrackPressed(_ sender: Any) {
         waveformViewController.loadTracks(mediaURL:URL(fileURLWithPath: Bundle.main.path(forResource: "4_tracks_audio", ofType: "mov")!))
     }
     @IBAction func newFilePressed(_ sender: Any) {

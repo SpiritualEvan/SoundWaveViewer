@@ -19,10 +19,10 @@
 		68CECEA11FB1AC9E00C4942A /* SoundWaveViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CECEA01FB1AC9E00C4942A /* SoundWaveViewerUITests.swift */; };
 		DA13B06F1FB3CDC5006C5207 /* video_only.mov in Resources */ = {isa = PBXBuildFile; fileRef = DA13B06E1FB3CDC5006C5207 /* video_only.mov */; };
 		DA13B0711FB3D04B006C5207 /* SVTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13B0701FB3D04B006C5207 /* SVTrack.swift */; };
-		DA4ADA351FB923D00046E3B3 /* 8_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = DA4ADA331FB923BF0046E3B3 /* 8_tracks_audio.mov */; };
 		DA8BC9FB1FB9126400421B0A /* SVWaveformDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BC9FA1FB9126400421B0A /* SVWaveformDrawer.swift */; };
 		DA8BC9FD1FB912CA00421B0A /* SVWaveformDrawerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BC9FC1FB912CA00421B0A /* SVWaveformDrawerTests.swift */; };
 		DABB44A71FB9251700A467EE /* 1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = DABB44A61FB9251700A467EE /* 1.m4a */; };
+		DABB44C11FB9295E00A467EE /* 13_tracks_audio.mov in Resources */ = {isa = PBXBuildFile; fileRef = DABB44C01FB9295D00A467EE /* 13_tracks_audio.mov */; };
 		DAC74DEA1FB26ACD007CAD88 /* SVWaveFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */; };
 		DAC74DF11FB27B1A007CAD88 /* SVSoundLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */; };
 		DAEF25A21FB908400001618D /* SVTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF25A11FB908400001618D /* SVTrackTests.swift */; };
@@ -65,10 +65,10 @@
 		68CECEA21FB1AC9E00C4942A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA13B06E1FB3CDC5006C5207 /* video_only.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video_only.mov; sourceTree = "<group>"; };
 		DA13B0701FB3D04B006C5207 /* SVTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVTrack.swift; path = WaveFormBuilder/SVTrack.swift; sourceTree = "<group>"; };
-		DA4ADA331FB923BF0046E3B3 /* 8_tracks_audio.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 8_tracks_audio.mov; sourceTree = "<group>"; };
 		DA8BC9FA1FB9126400421B0A /* SVWaveformDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SVWaveformDrawer.swift; path = WaveformDrawer/SVWaveformDrawer.swift; sourceTree = "<group>"; };
 		DA8BC9FC1FB912CA00421B0A /* SVWaveformDrawerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveformDrawerTests.swift; sourceTree = "<group>"; };
 		DABB44A61FB9251700A467EE /* 1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.m4a; sourceTree = "<group>"; };
+		DABB44C01FB9295D00A467EE /* 13_tracks_audio.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = 13_tracks_audio.mov; sourceTree = "<group>"; };
 		DAC74DE91FB26ACD007CAD88 /* SVWaveFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVWaveFormViewController.swift; sourceTree = "<group>"; };
 		DAC74DF01FB27B1A007CAD88 /* SVSoundLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVSoundLoaderTests.swift; sourceTree = "<group>"; };
 		DAEF25A11FB908400001618D /* SVTrackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVTrackTests.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 				68CECE891FB1AC9E00C4942A /* LaunchScreen.storyboard */,
 				68CECE8C1FB1AC9E00C4942A /* Info.plist */,
 				685FFB7A1FB8204000B3E395 /* 4_tracks_audio.mov */,
-				DA4ADA331FB923BF0046E3B3 /* 8_tracks_audio.mov */,
+				DABB44C01FB9295D00A467EE /* 13_tracks_audio.mov */,
 			);
 			path = SoundWaveViewer;
 			sourceTree = "<group>";
@@ -303,11 +303,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA4ADA351FB923D00046E3B3 /* 8_tracks_audio.mov in Resources */,
 				68CECE8B1FB1AC9E00C4942A /* LaunchScreen.storyboard in Resources */,
 				68CECE881FB1AC9E00C4942A /* Assets.xcassets in Resources */,
 				68CECE861FB1AC9E00C4942A /* Main.storyboard in Resources */,
 				685FFB7B1FB8204300B3E395 /* 4_tracks_audio.mov in Resources */,
+				DABB44C11FB9295E00A467EE /* 13_tracks_audio.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,6 +25,9 @@ final class SVWaveFormViewController: UIViewController {
     }
     
     func loadTracks(mediaURL:URL!) {
+        media = nil
+        tracksView.reloadData()
+        detailWaveformView.reloadData()
         view.isUserInteractionEnabled = false
         loadingIndicator.startAnimating()
         
