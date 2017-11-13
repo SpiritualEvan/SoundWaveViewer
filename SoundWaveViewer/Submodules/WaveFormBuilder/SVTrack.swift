@@ -183,7 +183,14 @@ class SVTrack {
         var downsampleBuffer = [Float](repeating: 0.0, count: length)
         vDSP_desamp(self.pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(length), vDSP_Length(stride))
         
-        vDSP_vsdiv(downsampleBuffer, 1, &self.maxLength, &downsampleBuffer, 1, vDSP_Length(length))
+        var maxPCMData:Float = 0.0
+        var minPCMData:Float = 0.0
+        vDSP_maxv(downsampleBuffer, 1, &maxPCMData, vDSP_Length(downsampleBuffer.count))
+        vDSP_minv(downsampleBuffer, 1, &minPCMData, vDSP_Length(downsampleBuffer.count))
+        var maxLength = fabs(minPCMData) > maxPCMData ? fabs(minPCMData) : maxPCMData
+        
+        vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(length))
+        
         return downsampleBuffer
         
     }

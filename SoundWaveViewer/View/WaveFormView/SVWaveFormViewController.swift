@@ -48,6 +48,8 @@ final class SVWaveFormViewController: UIViewController {
             }
             weakSelf.media = loadedMedia
             weakSelf.tracksView.reloadData()
+            weakSelf.tracksView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .top)
+            weakSelf.tableView(weakSelf.tracksView, didSelectRowAt: IndexPath(row: 0, section: 0))
         }
         
     }
@@ -71,6 +73,7 @@ extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         detailWaveformView.reloadData()
+        detailWaveformView.setContentOffset(.zero, animated: false)
     }
 }
 extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -107,6 +110,9 @@ extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(0, collectionView.frame.width / 2, 0, collectionView.frame.width / 2)
     }
 }
 

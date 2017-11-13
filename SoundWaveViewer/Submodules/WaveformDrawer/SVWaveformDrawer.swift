@@ -10,7 +10,9 @@ import UIKit
 
 class SVWaveformDrawer: NSObject {
     class func waveformImage(waveform:[Float], imageSize:CGSize) throws -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(imageSize, false, UIScreen.main.scale)
+        
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, scale)
         guard let context = UIGraphicsGetCurrentContext() else {
             throw SVWaveFormError.failedToCreateContextWhileCreatingWaveformThumbnail
         }
@@ -28,7 +30,7 @@ class SVWaveformDrawer: NSObject {
             path.move(to: nextPoint)
         }
         context.addPath(path)
-        context.setStrokeColor(UIColor.blue.cgColor)
+        context.setStrokeColor(UIColor.lightGray.cgColor)
         context.strokePath()
         
         if let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext() {

@@ -39,5 +39,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Please allow the media access</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow the camera access</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow the microphone access</string>
 </dict>
 </plist>
