@@ -23,7 +23,7 @@ class SVWaveformDrawerTests: XCTestCase {
     
     func testGeneratingWaveformImage() {
         
-        let dataArray = [MinMaxElement](repeating:(1.0, -1.0), count: 4096)
+        let dataArray = [WaveformMinMax](repeating:(1.0, -1.0), count: 4096)
         let expectedSize = CGSize(width: 4096, height: 4096)
         self.measure {
             do {

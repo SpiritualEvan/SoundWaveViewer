@@ -12,7 +12,6 @@ final class SVWaveFormViewController: UIViewController {
     
     let SVBriefWaveformCellIdentifier = "SVBriefWaveformCellIdentifier"
     let SVFullWaveformItemCellIdentifier = "SVFullWaveformItemCellIdentifier"
-    let SamplePerPixelForLargeWaveform = 800
     
     var media:SVMedia?
     @IBOutlet weak var tracksView: UITableView!
@@ -86,7 +85,7 @@ extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDa
             return cell
         }
         
-        let segmentDescription = SVWaveformSegmentDescription(imageSize: cell.frame.size, indexOfSegment: indexPath.row, samplesPerPixel: SamplePerPixelForLargeWaveform)
+        let segmentDescription = SVWaveformSegmentDescription(size: cell.frame.size, indexOfSegment: indexPath.row)
         cell.setup(track: media!.tracks[indexPathOfSelectedTrack.row], segmentDescription: segmentDescription)
         return cell
     }
@@ -99,7 +98,7 @@ extension SVWaveFormViewController: UICollectionViewDelegate, UICollectionViewDa
             return 0
         }
         let selectedTrack = loadedMedia.tracks[indexPathOfSelectedTrack.row]
-        let segmentDescription = SVWaveformSegmentDescription(imageSize: collectionView.frame.size, indexOfSegment: 0, samplesPerPixel: SamplePerPixelForLargeWaveform)
+        let segmentDescription = SVWaveformSegmentDescription(size: collectionView.frame.size, indexOfSegment: 0)
         return selectedTrack.numberOfWaveformSegments(segmentDescription: segmentDescription)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

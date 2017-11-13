@@ -12,33 +12,33 @@ import Accelerate
 
 enum SVWaveFormError:Error {
     case failedToReadAudioFile(url:URL)
-    case failedToCreatePCMFormatObject
-    case failedToAllocatePCMBufferObject
-    case cannotFoundFloatDataFromPCMBuffer
-    case failedToCreateDownsamplePCMData
     case failedToCreateContextWhileCreatingWaveformThumbnail
     case failedReadingAudioTrack(readerStaus:AVAssetReaderStatus)
     case failedToGetCMSampleBufferGetDataBuffer
     case failedToGetStreamBasicDescription
 }
-typealias MinMaxElement = (Float, Float)
+
+typealias WaveformMinMax = (Float, Float)
+
 struct SVWaveformSegmentDescription {
-    let imageSize:CGSize
+    let size:CGSize
     let indexOfSegment:Int
-    let samplesPerPixel:Int
 }
 
 class SVTrack {
     
+    static let SamplePerWave512:Int = 512
+    
     var asset:AVAsset!
     var assetTrack:AVAssetTrack!
-    var pcmDatas = [Float]()
-    var maxLength:Float = 0.0
+    var waveformData = [WaveformMinMax]()
     private var thumbnail:UIImage?
     
     init() {}
+    
     init(asset:AVAsset!, track:AVAssetTrack!) throws {
-        self.pcmDatas = [Float]()
+        
+        self.waveformData = [WaveformMinMax]()
         guard let basicDesc = CMAudioFormatDescriptionGetStreamBasicDescription(track!.formatDescriptions[0] as! CMAudioFormatDescription) else {
             throw SVWaveFormError.failedToGetStreamBasicDescription
         }
@@ -56,7 +56,6 @@ class SVTrack {
         reader.add(trackOutput)
         reader.startReading()
         
-        
         while AVAssetReaderStatus.completed != reader.status {
             switch reader.status {
             case .reading:
@@ -66,7 +65,9 @@ class SVTrack {
                         let pcmBlockArray = [Float](repeating:0.0, count:pcmBlockSize/4)
                         let blockPointer = UnsafeMutablePointer(mutating:pcmBlockArray)
                         CMBlockBufferCopyDataBytes(pcmBlock, 0, pcmBlockSize, blockPointer)
-                        self.pcmDatas.append(contentsOf: pcmBlockArray)
+                        let wavedata = SVTrack.convertToWaveform(pcmData: pcmBlockArray,
+                                                                 samplePerWave:SVTrack.SamplePerWave512)
+                        self.waveformData.append(contentsOf: wavedata)
                     }else {
                         throw SVWaveFormError.failedToGetCMSampleBufferGetDataBuffer
                     }
@@ -80,23 +81,23 @@ class SVTrack {
             
         }
         
-        var maxPCMData:Float = 0.0
-        var minPCMData:Float = 0.0
-        vDSP_maxv(pcmDatas, 1, &maxPCMData, vDSP_Length(pcmDatas.count))
-        vDSP_minv(pcmDatas, 1, &minPCMData, vDSP_Length(pcmDatas.count))
-        self.maxLength = fabs(minPCMData) > maxPCMData ? fabs(minPCMData) : maxPCMData
     }
-    
+    class func convertToWaveform(pcmData:[Float], samplePerWave:Int) -> [WaveformMinMax] {
+        let pcmSegments = stride(from: 0, to: pcmData.count, by: samplePerWave).map {
+            [Float](pcmData[$0 ..< Swift.min($0 + samplePerWave, pcmData.count)])
+        }
+        var max:Float = 0.0
+        var min:Float = 0.0
+        let waveformData = pcmSegments.map { (pcmSegment) -> (WaveformMinMax) in
+            vDSP_maxv(pcmSegment, 1, &max, vDSP_Length(pcmSegment.count))
+            vDSP_minv(pcmSegment, 1, &min, vDSP_Length(pcmSegment.count))
+            return (min, max)
+        }
+        return waveformData
+    }
     func numberOfWaveformSegments(segmentDescription: SVWaveformSegmentDescription) -> Int {
-        var totalWidth = Double(pcmDatas.count) / Double(segmentDescription.samplesPerPixel)
-        if totalWidth > floor(totalWidth) {
-            totalWidth = floor(totalWidth) + 1
-        }
-        var numberOfSegment = totalWidth / Double(segmentDescription.imageSize.width)
-        if numberOfSegment > floor(numberOfSegment) {
-            numberOfSegment = floor(numberOfSegment) + 1
-        }
-        return Int(numberOfSegment)
+        let numberOfSegment = Float(waveformData.count) / Float(segmentDescription.size.width)
+        return Int(fabs(numberOfSegment) < numberOfSegment ? numberOfSegment + 1 : numberOfSegment)
     }
     func requestWaveformSegmentImage(segmentDescription: SVWaveformSegmentDescription,
                        completion:@escaping ((_ image:UIImage?, _ error:Error?) -> Void )) -> Operation {
@@ -109,19 +110,8 @@ class SVTrack {
                 return
             }
             
-            let samplePerSegment = Int(segmentDescription.imageSize.width) * segmentDescription.samplesPerPixel
-            let fromIndex = samplePerSegment * segmentDescription.indexOfSegment
-            let toIndex = fromIndex + samplePerSegment
-            
-            var segmentLength = samplePerSegment
-            if toIndex > strongSelf.pcmDatas.count {
-                segmentLength = strongSelf.pcmDatas.count - fromIndex
-            }
-            
-            let downsampleData = strongSelf.downsampleData(range: NSMakeRange(fromIndex, segmentLength), downsampleLength: Int(segmentDescription.imageSize.width))
-            
             do {
-                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampleData, imageSize: segmentDescription.imageSize)
+                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: strongSelf.waveformData, imageSize: segmentDescription.size)
             }catch {
                 completion(nil, error)
                 return
@@ -149,10 +139,10 @@ class SVTrack {
                 }
                 return
             }
-            let downsampledPCMDatas = strongSelf.downsampleData(width: Int(size.width))
+            let reducedWaveformData = strongSelf.reducedWavedata(width: Int(size.width))
             
             do {
-                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampledPCMDatas, imageSize: size)
+                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: reducedWaveformData, imageSize: size)
             }catch {
                 completion(nil, error)
                 return
@@ -162,41 +152,12 @@ class SVTrack {
             }
         }
     }
-    
-    
-    func downsampleData(range:NSRange, downsampleLength:Int) -> [MinMaxElement] {
-        
-        let totalSample = [Float](pcmDatas[range.location ..< (range.location + range.length)])
-        let samplePerPixel = Int(totalSample.count / downsampleLength)
-        var waveformData = [MinMaxElement](repeating:(0.0, 0.0), count:downsampleLength)
-        var max:Float = 0.0
-        var min:Float = 0.0
-        for i in 0 ..< downsampleLength {
-            let from = samplePerPixel * i
-            let to = from + samplePerPixel
-            let partialSample = [Float](totalSample[from ..< to])
-            vDSP_maxv(partialSample, 1, &max, vDSP_Length(partialSample.count))
-            vDSP_minv(partialSample, 1, &min, vDSP_Length(partialSample.count))
-            waveformData[i] = (min, max)
+    func reducedWavedata(width:Int) -> [WaveformMinMax] {
+        let wavePerSegment = Int(waveformData.count / width) > 0 ? Int(waveformData.count / width) : 1
+        let reducedWaveformData = stride(from: 0, to: waveformData.count, by: wavePerSegment).map { (index) -> WaveformMinMax in
+            let waveformDatas = [WaveformMinMax](self.waveformData[index ..< Swift.min(index + wavePerSegment, self.waveformData.count)])
+            return waveformDatas.reduce((0.0, 0.0)) { (Swift.min($0.0, $1.0), Swift.max($0.1, $1.1))}
         }
-        return waveformData
-        
-    }
-    func downsampleData(width:Int) -> [MinMaxElement] {
-        
-        let samplePerPixel = Int(pcmDatas.count / width)
-        var waveformData = [MinMaxElement](repeating:(0.0, 0.0), count:width)
-        var max:Float = 0.0
-        var min:Float = 0.0
-        for i in 0 ..< width {
-            let from = samplePerPixel * i
-            let to = from + samplePerPixel
-            let partialSample = [Float](pcmDatas[from ..< to])
-            vDSP_maxv(partialSample, 1, &max, vDSP_Length(partialSample.count))
-            vDSP_minv(partialSample, 1, &min, vDSP_Length(partialSample.count))
-            waveformData[i] = (min, max)
-        }
-        return waveformData
-        
+        return reducedWaveformData
     }
 }

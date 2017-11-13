@@ -9,7 +9,7 @@
 import UIKit
 
 class SVWaveformDrawer: NSObject {
-    class func waveformImage(waveform:[MinMaxElement], imageSize:CGSize) throws -> UIImage {
+    class func waveformImage(waveform:[WaveformMinMax], imageSize:CGSize) throws -> UIImage {
         
         let scale = UIScreen.main.scale
         UIGraphicsBeginImageContextWithOptions(imageSize, false, scale)
@@ -24,9 +24,11 @@ class SVWaveformDrawer: NSObject {
         let maxLength:CGFloat = imageSize.height / 2.0
         
         path.move(to: CGPoint(x: 0, y: centerY))
+        let xStride = imageSize.width / CGFloat(waveform.count)
         for (x, (min, max)) in waveform.enumerated() {
-            let maxPoint = CGPoint(x: CGFloat(x), y: centerY - (maxLength * CGFloat(max)))
-            let minPoint = CGPoint(x: CGFloat(x), y: centerY - (maxLength * CGFloat(min) + 1))
+            let posX = CGFloat(x) * xStride
+            let maxPoint = CGPoint(x: posX, y: centerY - (maxLength * CGFloat(max)))
+            let minPoint = CGPoint(x: posX, y: centerY - (maxLength * CGFloat(min) + 1))
             path.move(to: maxPoint)
             path.addLine(to: minPoint)
         }
