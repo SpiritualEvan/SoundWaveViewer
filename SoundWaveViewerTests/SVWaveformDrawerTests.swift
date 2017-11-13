@@ -21,17 +21,18 @@ class SVWaveformDrawerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testWaveformImageWithWaveformSegmentInformation() {
+    func testGeneratingWaveformImage() {
         
-        var dataArray = [Float](repeating:1.0, count: 44100 * 60 * 30)
-        dataArray += [Float](repeating:-1.0, count: 44100 * 60 * 30)
-        let expectedSize = CGSize(width: 10.0, height: 10.0)
-        do {
-            let image = try SVWaveformDrawer.waveformImage(waveform: dataArray, imageSize: expectedSize)
-            XCTAssertNotNil(image)
-            XCTAssertEqual(expectedSize, image.size)
-        }catch {
-            XCTFail(error.localizedDescription)
+        let dataArray = [Float](repeating:1.0, count: 4096)
+        let expectedSize = CGSize(width: 4096, height: 4096)
+        self.measure {
+            do {
+                let image = try SVWaveformDrawer.waveformImage(waveform: dataArray, imageSize: expectedSize)
+                XCTAssertNotNil(image)
+                XCTAssertEqual(expectedSize, image.size)
+            }catch {
+                XCTFail(error.localizedDescription)
+            }
         }
         
     }

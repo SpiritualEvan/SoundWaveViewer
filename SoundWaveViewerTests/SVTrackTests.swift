@@ -95,6 +95,55 @@ class SVTrackTests: XCTestCase {
             XCTAssertTrue(0.1 > fabs(floatArray.last! + 1.0)) // expect -1.0
         }
     }
-    
+//    func testGeneratingMultitackMedia() {
+//        let composition = AVMutableComposition()
+//        let onNextExpectation = expectation(description: "onNextExpectation")
+//
+//        let mediaNames = [("1","m4a"),
+//                          ("2","m4a"),
+//                          ("3","m4a"),
+//                          ("4","m4a"),
+//                          ("5","MP4"),
+//                          ("6","MP4"),
+//                          ("7","MOV"),
+//                          ("8","MOV"),
+//                          ("9","MOV"),
+//                          ("10","MOV"),
+//                          ("11","MOV"),
+//                          ("12","MOV"),
+//                          ("13","MP4"),]
+//        for mediaName in mediaNames {
+//            let filePath = Bundle(for: type(of: self)).path(forResource: mediaName.0, ofType: mediaName.1)!
+//            let asset = AVURLAsset(url: URL(fileURLWithPath: filePath))
+//            let track = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)!
+//            do {
+//                try track.insertTimeRange(CMTimeRangeMake(kCMTimeZero, asset.duration),
+//                                          of: asset.tracks(withMediaType: .audio)[0], at: kCMTimeZero)
+//            }catch {
+//                XCTFail(error.localizedDescription)
+//            }
+//
+//        }
+//        let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetPassthrough)!
+//        exportSession.outputURL = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]).appendingPathComponent("export.mov")
+//        exportSession.outputFileType = AVFileType.mov
+//        exportSession.shouldOptimizeForNetworkUse = false
+//        exportSession.exportAsynchronously {
+//
+//            let exportAsset = AVURLAsset(url: exportSession.outputURL!)
+//            XCTAssertEqual(exportAsset.tracks(withMediaType: .audio).count, mediaNames.count)
+//            onNextExpectation.fulfill()
+//        }
+//
+//        self.waitForExpectations(timeout: 10) { (error) in
+//            guard nil == error else {
+//                XCTFail((error?.localizedDescription)!)
+//                return
+//            }
+//
+//        }
+//
+//    }
+
     
 }
