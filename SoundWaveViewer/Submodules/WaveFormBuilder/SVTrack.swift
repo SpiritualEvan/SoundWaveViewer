@@ -21,7 +21,7 @@ enum SVWaveFormError:Error {
     case failedToGetCMSampleBufferGetDataBuffer
     case failedToGetStreamBasicDescription
 }
-
+typealias MinMaxElement = (Float, Float)
 struct SVWaveformSegmentDescription {
     let imageSize:CGSize
     let indexOfSegment:Int
@@ -79,7 +79,6 @@ class SVTrack {
             }
             
         }
-        
         
         var maxPCMData:Float = 0.0
         var minPCMData:Float = 0.0
@@ -150,7 +149,7 @@ class SVTrack {
                 }
                 return
             }
-            let downsampledPCMDatas = strongSelf.downsampleData(length: Int(size.width))
+            let downsampledPCMDatas = strongSelf.downsampleData(width: Int(size.width))
             
             do {
                 strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampledPCMDatas, imageSize: size)
@@ -165,33 +164,39 @@ class SVTrack {
     }
     
     
-    func downsampleData(range:NSRange, downsampleLength:Int) -> [Float] {
-        let partialSample = [Float](pcmDatas[range.location ..< (range.location + range.length)])
-        let stride = Int(partialSample.count / downsampleLength)
-        let filter = [Float](repeating:1.0 / Float(stride), count: stride)
-        var downsampleBuffer = [Float](repeating: 0.0, count: downsampleLength)
-        vDSP_desamp(partialSample, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(downsampleLength), vDSP_Length(stride))
-
-        vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(downsampleLength))
-        return downsampleBuffer
-
+    func downsampleData(range:NSRange, downsampleLength:Int) -> [MinMaxElement] {
+        
+        let totalSample = [Float](pcmDatas[range.location ..< (range.location + range.length)])
+        let samplePerPixel = Int(totalSample.count / downsampleLength)
+        var waveformData = [MinMaxElement](repeating:(0.0, 0.0), count:downsampleLength)
+        var max:Float = 0.0
+        var min:Float = 0.0
+        for i in 0 ..< downsampleLength {
+            let from = samplePerPixel * i
+            let to = from + samplePerPixel
+            let partialSample = [Float](totalSample[from ..< to])
+            vDSP_maxv(partialSample, 1, &max, vDSP_Length(partialSample.count))
+            vDSP_minv(partialSample, 1, &min, vDSP_Length(partialSample.count))
+            waveformData[i] = (min, max)
+        }
+        return waveformData
+        
     }
-    func downsampleData(length:Int) -> [Float] {
+    func downsampleData(width:Int) -> [MinMaxElement] {
         
-        let stride = Int(pcmDatas.count / length)
-        let filter = [Float](repeating:1.0 / Float(stride), count: stride)
-        var downsampleBuffer = [Float](repeating: 0.0, count: length)
-        vDSP_desamp(self.pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(length), vDSP_Length(stride))
-        
-        var maxPCMData:Float = 0.0
-        var minPCMData:Float = 0.0
-        vDSP_maxv(downsampleBuffer, 1, &maxPCMData, vDSP_Length(downsampleBuffer.count))
-        vDSP_minv(downsampleBuffer, 1, &minPCMData, vDSP_Length(downsampleBuffer.count))
-        var maxLength = fabs(minPCMData) > maxPCMData ? fabs(minPCMData) : maxPCMData
-        
-        vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(length))
-        
-        return downsampleBuffer
+        let samplePerPixel = Int(pcmDatas.count / width)
+        var waveformData = [MinMaxElement](repeating:(0.0, 0.0), count:width)
+        var max:Float = 0.0
+        var min:Float = 0.0
+        for i in 0 ..< width {
+            let from = samplePerPixel * i
+            let to = from + samplePerPixel
+            let partialSample = [Float](pcmDatas[from ..< to])
+            vDSP_maxv(partialSample, 1, &max, vDSP_Length(partialSample.count))
+            vDSP_minv(partialSample, 1, &min, vDSP_Length(partialSample.count))
+            waveformData[i] = (min, max)
+        }
+        return waveformData
         
     }
 }

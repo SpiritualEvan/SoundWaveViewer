@@ -54,7 +54,7 @@ class SVTrackTests: XCTestCase {
         do {
             let track = try SVTrack(asset: asset, track: audioTrack)
             self.measure {
-                let downsampleArray = track.downsampleData(length: 320)
+                let downsampleArray = track.downsampleData(width: 320)
                 XCTAssertNotNil(downsampleArray)
                 XCTAssertEqual(320, downsampleArray.count)
             }
@@ -70,13 +70,13 @@ class SVTrackTests: XCTestCase {
         track.pcmDatas = [Float](repeating:1.0, count: 44100 * 60 * 60)
         track.maxLength = 1.0
         self.measure {
-            let downsampleArray = track.downsampleData(length: 10)
+            let downsampleArray = track.downsampleData(width: 10)
             XCTAssertNotNil(downsampleArray)
             XCTAssertEqual(10, downsampleArray.count)
             
             // vDSP_desamp doesn't calculate accurately
-            XCTAssertTrue(0.1 > fabs(downsampleArray.first! - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(downsampleArray.last! - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(downsampleArray.first!.0 - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(downsampleArray.last!.0 - 1.0)) // expect 1.0
         }
         
     }
@@ -86,13 +86,13 @@ class SVTrackTests: XCTestCase {
         track.pcmDatas += [Float](repeating:-1.0, count: 44100 * 60 * 30)
         track.maxLength = 1.0
         self.measure {
-            let floatArray = track.downsampleData(length: 20)
+            let floatArray = track.downsampleData(width: 20)
             XCTAssertNotNil(floatArray)
             XCTAssertEqual(20, floatArray.count)
-            XCTAssertTrue(0.1 > fabs(floatArray.first! - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(floatArray[9] - 1.0)) // expect 1.0
-            XCTAssertTrue(0.1 > fabs(floatArray[10] + 1.0)) // expect -1.0
-            XCTAssertTrue(0.1 > fabs(floatArray.last! + 1.0)) // expect -1.0
+            XCTAssertTrue(0.1 > fabs(floatArray.first!.0 - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(floatArray[9].0 - 1.0)) // expect 1.0
+            XCTAssertTrue(0.1 > fabs(floatArray[10].0 + 1.0)) // expect -1.0
+            XCTAssertTrue(0.1 > fabs(floatArray.last!.0 + 1.0)) // expect -1.0
         }
     }
     
