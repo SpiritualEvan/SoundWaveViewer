@@ -25,7 +25,7 @@ class SVWaveformDrawer: NSObject {
         
         path.move(to: CGPoint(x: 0, y: centerY))
         for (x, sample) in waveform.enumerated() {
-            let nextPoint = CGPoint(x: CGFloat(x), y: centerY + (maxLength * CGFloat(sample)))
+            let nextPoint = CGPoint(x: CGFloat(x), y: centerY - (maxLength * CGFloat(sample)))
             path.addLine(to: nextPoint)
             path.move(to: nextPoint)
         }

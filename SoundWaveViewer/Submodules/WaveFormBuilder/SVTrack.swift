@@ -150,7 +150,7 @@ class SVTrack {
                 }
                 return
             }
-            let downsampledPCMDatas = strongSelf.downsampleData(length: Int(size.width * 2))
+            let downsampledPCMDatas = strongSelf.downsampleData(length: Int(size.width))
             
             do {
                 strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampledPCMDatas, imageSize: size)
