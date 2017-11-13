@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreMedia
 
 final class SVWaveFormViewController: UIViewController {
     
@@ -14,15 +15,64 @@ final class SVWaveFormViewController: UIViewController {
     let SVFullWaveformItemCellIdentifier = "SVFullWaveformItemCellIdentifier"
     
     var media:SVMedia?
+    var playing:Bool = false
     @IBOutlet weak var tracksView: UITableView!
     @IBOutlet weak var detailWaveformView: UICollectionView!
+    @IBOutlet weak var playStopButton: UIButton!
     
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    private var displayLink:CADisplayLink!
+    var offset:CGFloat = 0.0
+    var offsetStride:CGFloat = 0.0
+    var mediaTime:CGFloat = 0.0
+    var timestamp:TimeInterval = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    @objc func update(displayLink:CADisplayLink) {
+//        let currentTime = displayLink.timestamp
+//        let elapsedTime = currentTime - timestamp
+        detailWaveformView.contentOffset = CGPoint(x: offset, y: 0)
+        offset += 1
+//        timestamp = currentTime
+    }
     
+    @IBAction func playStopPressed(_ sender: Any) {
+        if playing {
+            stoppedState()
+        }else {
+            playingState()
+        }
+    }
+    func stoppedState() {
+        self.playStopButton.setTitle("Play", for: .normal)
+        detailWaveformView.setContentOffset(.zero, animated: true)
+        if nil != displayLink {
+            displayLink.invalidate()
+            displayLink = nil
+        }
+        detailWaveformView.isUserInteractionEnabled = true
+        playing = false
+        offset = 0.0
+        offsetStride = 0.0
+    }
+    func playingState() {
+        playStopButton.setTitle("Stop", for: .normal)
+        displayLink = CADisplayLink(target: self, selector: #selector(update(displayLink:)))
+        displayLink.add(to: .current, forMode: .commonModes)
+        detailWaveformView.isUserInteractionEnabled = false
+        playing = true
+        offset = 0.0
+//        if let loadedMedia = media, let selectedTrack = tracksView.indexPathForSelectedRow?.row {
+//
+//            mediaTime =  CMTimeGetSeconds(loadedMedia.tracks[selectedTrack].asset.duration)
+//
+//            mediaTime = loadedMedia.tracks[selectedTrack].asset.duration
+//
+//        }
+        
+    }
     func loadTracks(mediaURL:URL!) {
         media = nil
         tracksView.reloadData()
@@ -71,6 +121,7 @@ extension SVWaveFormViewController: UITableViewDelegate, UITableViewDataSource
         return media?.tracks.count ?? 0
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        stoppedState()
         detailWaveformView.reloadData()
         detailWaveformView.setContentOffset(.zero, animated: false)
     }

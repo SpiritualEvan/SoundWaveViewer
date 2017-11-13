@@ -151,6 +151,9 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="wcG-So-vfa"/>
                                 </constraints>
                                 <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="playStopPressed:" destination="eK3-kf-Vko" eventType="touchUpInside" id="OeM-kB-qDU"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -175,6 +178,7 @@
                     <connections>
                         <outlet property="detailWaveformView" destination="8OB-Xu-A3d" id="pR3-dY-Gkg"/>
                         <outlet property="loadingIndicator" destination="lki-O3-GPO" id="lgB-cV-oIi"/>
+                        <outlet property="playStopButton" destination="xSj-ry-bmx" id="p2D-zn-lob"/>
                         <outlet property="tracksView" destination="f6E-OL-tL7" id="Tt9-D0-1Hw"/>
                     </connections>
                 </viewController>
