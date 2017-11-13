@@ -25,7 +25,7 @@ final class SVBriefWaveformCell: UITableViewCell {
             thumbnailTask!.cancel()
         }
         
-        let thumbnailLoadTask = waveform.thumbnail(size: self.frame.size, completion: { [weak self] (image, error) in
+        let thumbnailLoadTask = waveform.requestThumbnail(size: self.frame.size, completion: { [weak self] (image, error) in
             
             guard nil != self else {
                 return

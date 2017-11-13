@@ -99,7 +99,7 @@ class SVTrack {
         }
         return Int(numberOfSegment)
     }
-    func waveformImage(segmentDescription: SVWaveformSegmentDescription,
+    func requestWaveformSegmentImage(segmentDescription: SVWaveformSegmentDescription,
                        completion:@escaping ((_ image:UIImage?, _ error:Error?) -> Void )) -> Operation {
         return BlockOperation { [weak self] in
             
@@ -113,112 +113,77 @@ class SVTrack {
             let samplePerSegment = Int(segmentDescription.imageSize.width) * segmentDescription.samplesPerPixel
             let fromIndex = samplePerSegment * segmentDescription.indexOfSegment
             let toIndex = fromIndex + samplePerSegment
-            let segmentLength = toIndex > strongSelf.pcmDatas.count ? strongSelf.pcmDatas.count : samplePerSegment
-            let downsampleData = strongSelf.downsamplePCMSegment(range: NSMakeRange(fromIndex, segmentLength), targetDownsampleLength: Int(segmentDescription.imageSize.width))
             
-            UIGraphicsBeginImageContextWithOptions(segmentDescription.imageSize, false, UIScreen.main.scale)
-            guard let context = UIGraphicsGetCurrentContext() else {
-                DispatchQueue.main.async {
-                    completion(nil, SVWaveFormError.failedToCreateContextWhileCreatingWaveformThumbnail)
-                }
+            var segmentLength = samplePerSegment
+            if toIndex > strongSelf.pcmDatas.count {
+                segmentLength = strongSelf.pcmDatas.count - fromIndex
+            }
+            
+            let downsampleData = strongSelf.downsampleData(range: NSMakeRange(fromIndex, segmentLength), downsampleLength: Int(segmentDescription.imageSize.width))
+            
+            do {
+                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampleData, imageSize: segmentDescription.imageSize)
+            }catch {
+                completion(nil, error)
                 return
             }
-            context.setAlpha(1.0)
-            context.setLineWidth(0.5)
-            let path = CGMutablePath()
             
-            let centerY:CGFloat = segmentDescription.imageSize.height / 2.0
-            let maxLength:CGFloat = segmentDescription.imageSize.height / 2.0
-            
-            path.move(to: CGPoint(x: 0, y: centerY))
-            for (x, sample) in downsampleData.enumerated() {
-                let nextPoint = CGPoint(x: CGFloat(x), y: centerY + (maxLength * CGFloat(sample)))
-                path.addLine(to: nextPoint)
-                path.move(to: nextPoint)
-            }
-            context.addPath(path)
-            context.setStrokeColor(UIColor.blue.cgColor)
-            context.strokePath()
-            
-            let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            strongSelf.thumbnail = thumbnailImage
             DispatchQueue.main.async {
-                completion(thumbnailImage, nil)
+                completion(strongSelf.thumbnail, nil)
             }
             
             
         }
         
     }
-    func thumbnail(size:CGSize, completion:@escaping((_ image:UIImage?, _ error:Error?) -> Void)) -> Operation! {
+    func requestThumbnail(size:CGSize, completion:@escaping((_ image:UIImage?, _ error:Error?) -> Void)) -> Operation! {
         
         return BlockOperation { [weak self] in
             
-            guard nil != self else {
+            guard let strongSelf = self else {
                 return
             }
             
-            guard nil == self!.thumbnail else {
+            guard nil == strongSelf.thumbnail else {
                 DispatchQueue.main.async {
-                    completion(self!.thumbnail!, nil)
+                    completion(strongSelf.thumbnail!, nil)
                 }
                 return
             }
+            let downsampledPCMDatas = strongSelf.downsampleData(length: Int(size.width * 2))
             
-            let downsampledPCMDatas = self!.downsamplePCMDatas(targetDownsampleLength: Int(size.width * 2))
-            
-            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
-            guard let context = UIGraphicsGetCurrentContext() else {
-                DispatchQueue.main.async {
-                    completion(nil, SVWaveFormError.failedToCreateContextWhileCreatingWaveformThumbnail)
-                }
+            do {
+                strongSelf.thumbnail = try SVWaveformDrawer.waveformImage(waveform: downsampledPCMDatas, imageSize: size)
+            }catch {
+                completion(nil, error)
                 return
             }
-            context.setAlpha(1.0)
-            context.setLineWidth(0.5)
-            let path = CGMutablePath()
-            
-            let centerY:CGFloat = size.height / 2.0
-            let maxLength:CGFloat = size.height / 2.0
-            
-            path.move(to: CGPoint(x: 0, y: centerY))
-            for (x, sample) in downsampledPCMDatas.enumerated() {
-                let nextPoint = CGPoint(x: CGFloat(x), y: centerY + (maxLength * CGFloat(sample)))
-                path.addLine(to: nextPoint)
-                path.move(to: nextPoint)
-            }
-            context.addPath(path)
-            context.setStrokeColor(UIColor.blue.cgColor)
-            context.strokePath()
-            
-            let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            self!.thumbnail = thumbnailImage
             DispatchQueue.main.async {
-                completion(thumbnailImage, nil)
+                completion(strongSelf.thumbnail, nil)
             }
         }
     }
-    func downsamplePCMSegment(range:NSRange, targetDownsampleLength:Int) -> [Float] {
-
-        let stride = Int(pcmDatas.count / targetDownsampleLength)
+    
+    
+    func downsampleData(range:NSRange, downsampleLength:Int) -> [Float] {
+        let partialSample = [Float](pcmDatas[range.location ..< (range.location + range.length)])
+        let stride = Int(partialSample.count / downsampleLength)
         let filter = [Float](repeating:1.0 / Float(stride), count: stride)
-        var downsampleBuffer = [Float](repeating: 0.0, count: targetDownsampleLength)
-        vDSP_desamp(pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(targetDownsampleLength), vDSP_Length(stride))
+        var downsampleBuffer = [Float](repeating: 0.0, count: downsampleLength)
+        vDSP_desamp(partialSample, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(downsampleLength), vDSP_Length(stride))
 
-        vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(targetDownsampleLength))
+        vDSP_vsdiv(downsampleBuffer, 1, &maxLength, &downsampleBuffer, 1, vDSP_Length(downsampleLength))
         return downsampleBuffer
 
     }
-    func downsamplePCMDatas(targetDownsampleLength:Int) -> [Float] {
+    func downsampleData(length:Int) -> [Float] {
         
-        let stride = Int(pcmDatas.count / targetDownsampleLength)
+        let stride = Int(pcmDatas.count / length)
         let filter = [Float](repeating:1.0 / Float(stride), count: stride)
-        var downsampleBuffer = [Float](repeating: 0.0, count: targetDownsampleLength)
-        vDSP_desamp(self.pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(targetDownsampleLength), vDSP_Length(stride))
+        var downsampleBuffer = [Float](repeating: 0.0, count: length)
+        vDSP_desamp(self.pcmDatas, vDSP_Stride(stride), filter, &downsampleBuffer, vDSP_Length(length), vDSP_Length(stride))
         
-        vDSP_vsdiv(downsampleBuffer, 1, &self.maxLength, &downsampleBuffer, 1, vDSP_Length(targetDownsampleLength))
+        vDSP_vsdiv(downsampleBuffer, 1, &self.maxLength, &downsampleBuffer, 1, vDSP_Length(length))
         return downsampleBuffer
         
     }

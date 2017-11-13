@@ -24,7 +24,7 @@ final class SVFullWaveformItemCell: UICollectionViewCell {
             waveformImageTask = nil
         }
         
-        let waveformTask = track.waveformImage(segmentDescription: segmentDescription) { [weak self] (image, error) in
+        let waveformTask = track.requestWaveformSegmentImage(segmentDescription: segmentDescription) { [weak self] (image, error) in
             guard nil != self else {
                 return
             }
